@@ -2,6 +2,11 @@
   "name": "tcomb-form-native-builder",
   "version": "0.0.0",
   "description": "Forms builder library for React Native",
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "jest --coverage --notify"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/QuantumBA/tcomb-form-native-builder.git"
@@ -20,7 +25,31 @@
     "tcomb-json-schema": "^0.3.2"
   },
   "devDependencies": {
+    "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-react-native": "^4.0.0"
+    "babel-preset-react-native": "^4.0.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "enzyme-to-json": "^3.2.2",
+    "eslint": "^4.12.1",
+    "eslint-plugin-react": "^7.5.1",
+    "jest": "^21.2.1",
+    "jest-react-native": "^18.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-native": "^0.50.4"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/*.js"
+    ],
+    "preset": "jest-react-native",
+    "setupTestFrameworkScriptFile": "./src/setupTests.js",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/?!(tcomb-form-native)"
+    ]
   }
 }
