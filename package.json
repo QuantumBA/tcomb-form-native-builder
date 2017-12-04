@@ -1,0 +1,26 @@
+{
+  "name": "tcomb-form-native-builder",
+  "version": "0.0.0",
+  "description": "Forms builder library for React Native",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuantumBA/tcomb-form-native-builder.git"
+  },
+  "author": "Quantum BA (http://www.quantum-ba.com/)",
+  "contributors": [
+    "Jesús Leganés-Combarro 'piranna' <piranna@gmail.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/QuantumBA/tcomb-form-native-builder/issues"
+  },
+  "homepage": "https://github.com/QuantumBA/tcomb-form-native-builder#readme",
+  "dependencies": {
+    "tcomb-form-native": "^0.6.11",
+    "tcomb-json-schema": "^0.3.2"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react-native": "^4.0.0"
+  }
+}
