@@ -37,6 +37,6 @@ export default class Builder extends Component
   {
     const {options, type} = this.state
 
-    return <Form options={options} type={type}/>
+    return <Form {...this.props} options={options} type={type}/>
   }
 }
