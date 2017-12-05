@@ -5,10 +5,11 @@ import transform from 'tcomb-json-schema'
 import Builder from '../src'
 
 
+const fixture = require('./fixture/1.json')
+
+
 describe('load definition', function()
 {
-  const fixture = require('./fixture.json')
-
   it('no definition', function()
   {
     const wrapper = mount(<Builder/>)
@@ -70,4 +71,15 @@ describe('load definition', function()
       expect(wrapper).toMatchSnapshot()
     })
   })
+})
+
+it('update definition', function()
+{
+  const wrapper = mount(<Builder type={fixture}/>)
+
+  expect(wrapper).toMatchSnapshot()
+
+  wrapper.setProps({type: require('./fixture/2.json')})
+
+  expect(wrapper).toMatchSnapshot()
 })
