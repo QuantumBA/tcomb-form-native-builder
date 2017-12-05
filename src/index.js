@@ -5,8 +5,10 @@ import transform          from 'tcomb-json-schema'
 const {Form} = t.form
 
 
-function getPropState(type = {})
+function getPropState(type, children)
 {
+  type = type || children || {}
+
   // JSON string
   if(typeof type === 'string') type = JSON.parse(type)
 
@@ -19,16 +21,16 @@ function getPropState(type = {})
 
 export default class Builder extends Component
 {
-  constructor({json})
+  constructor({type, children})
   {
     super()
 
-    this.state = getPropState(json)
+    this.state = getPropState(type, children)
   }
 
-  componentWillReceiveProps({json})
+  componentWillReceiveProps({type, children})
   {
-    this.setState(getPropState(json))
+    this.setState(getPropState(type, children))
   }
 
   render()

@@ -3,3 +3,9 @@
 
 # tcomb-form-native-builder
 Forms builder library for React Native
+
+## Known bugs (aka *features*)
+
+If no `type` is defined (both as property or as body), by default it creates a
+single `Textbox` instead of an empty form. Seems to be a feature of
+`tcomb-json-schema` or `tcomb-form-native` itself.
