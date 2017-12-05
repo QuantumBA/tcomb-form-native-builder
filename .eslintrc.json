@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es6": true,
-    "jest": true
+    "jest": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
@@ -10,6 +11,7 @@
   ],
   "parserOptions": {
     "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
       "jsx": true
     },
     "sourceType": "module"
@@ -21,7 +23,7 @@
     "array-callback-return": "error",
     "array-element-newline": "error",
     "arrow-body-style": "error",
-    "arrow-parens": "error",
+    "arrow-parens": "warn",
     "arrow-spacing": "error",
     "block-scoped-var": "error",
     "block-spacing": "error",
@@ -47,7 +49,7 @@
     "consistent-this": "error",
     "curly": "off",
     "default-case": "error",
-    "dot-location": "error",
+    "dot-location": ["error", "property"],
     "dot-notation": "error",
     "eol-last": "error",
     "eqeqeq": "error",
@@ -65,7 +67,6 @@
     "function-paren-newline": "error",
     "generator-star-spacing": "error",
     "getter-return": "error",
-    "global-require": "error",
     "guard-for-in": "error",
     "handle-callback-err": "error",
     "id-blacklist": "error",
@@ -90,7 +91,6 @@
       "always"
     ],
     "max-depth": "error",
-    "max-len": "error",
     "max-lines": "error",
     "max-nested-callbacks": "error",
     "max-params": "error",
@@ -114,6 +114,7 @@
     "no-caller": "error",
     "no-catch-shadow": "error",
     "no-confusing-arrow": "error",
+    "no-console": "warn",
     "no-continue": "error",
     "no-div-regex": "error",
     "no-duplicate-imports": "error",
@@ -137,7 +138,7 @@
     "no-lone-blocks": "error",
     "no-lonely-if": "error",
     "no-loop-func": "error",
-    "no-magic-numbers": "error",
+    "no-magic-numbers": "warn",
     "no-mixed-operators": "error",
     "no-mixed-requires": "error",
     "no-multi-assign": "error",
@@ -216,7 +217,6 @@
     "prefer-destructuring": "error",
     "prefer-numeric-literals": "error",
     "prefer-promise-reject-errors": "error",
-    "prefer-reflect": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "prefer-template": "error",
