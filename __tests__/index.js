@@ -11,7 +11,7 @@ const fixture = require('./fixture/1.json')
 
 describe('load definition', function()
 {
-  it('no definition', function()
+  test('no definition', function()
   {
     const wrapper = mount(<Builder/>)
 
@@ -22,14 +22,14 @@ describe('load definition', function()
   {
     const json = JSON.stringify(fixture)
 
-    it('prop', function()
+    test('prop', function()
     {
       const wrapper = mount(<Builder type={json}/>)
 
       expect(wrapper).toMatchSnapshot()
     })
 
-    it('body', function()
+    test('body', function()
     {
       const wrapper = mount(<Builder>{json}</Builder>)
 
@@ -39,14 +39,14 @@ describe('load definition', function()
 
   describe('JSON object', function()
   {
-    it('prop', function()
+    test('prop', function()
     {
       const wrapper = mount(<Builder type={fixture}/>)
 
       expect(wrapper).toMatchSnapshot()
     })
 
-    it('body', function()
+    test('body', function()
     {
       const wrapper = mount(<Builder>{fixture}</Builder>)
 
@@ -58,14 +58,14 @@ describe('load definition', function()
   {
     const tcomb = transform(fixture)
 
-    it('prop', function()
+    test('prop', function()
     {
       const wrapper = mount(<Builder type={tcomb}/>)
 
       expect(wrapper).toMatchSnapshot()
     })
 
-    it('body', function()
+    test('body', function()
     {
       const wrapper = mount(<Builder>{tcomb}</Builder>)
 
@@ -74,7 +74,7 @@ describe('load definition', function()
   })
 })
 
-it('update definition', function()
+test('update definition', function()
 {
   const wrapper = mount(<Builder type={fixture}/>)
 
