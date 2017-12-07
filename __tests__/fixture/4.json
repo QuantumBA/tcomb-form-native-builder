@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "street_type": {
+      "type": "string",
+      "factory": "customFactory",
+      "enum": ["Street", "Avenue", "Boulevard"]
+    }
+  }
+}
