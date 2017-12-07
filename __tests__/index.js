@@ -91,27 +91,24 @@ describe('custom factories', function()
 
   test('root element', function()
   {
-    const wrapper = mount(
-      <Builder type={require('./fixture/3.json')} factories={factories}/>
-    )
+    const wrapper = mount(<Builder type={require('./fixture/3.json')}
+      factories={factories}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
 
   test('object property', function()
   {
-    const wrapper = mount(
-      <Builder type={require('./fixture/4.json')} factories={factories}/>
-    )
+    const wrapper = mount(<Builder type={require('./fixture/4.json')}
+      factories={factories}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
 
   test('array item', function()
   {
-    const wrapper = mount(
-      <Builder type={require('./fixture/5.json')} factories={factories}/>
-    )
+    const wrapper = mount(<Builder type={require('./fixture/5.json')}
+      factories={factories}/>)
 
     expect(wrapper).toMatchSnapshot()
 
@@ -125,7 +122,10 @@ describe('custom factories', function()
   {
     const type = require('./fixture/6.json')
 
-    const wrapper = () => mount(<Builder type={type} factories={factories}/>)
+    function wrapper()
+    {
+      mount(<Builder type={type} factories={factories}/>)
+    }
 
     expect(wrapper).toThrowErrorMatchingSnapshot()
   })
@@ -150,9 +150,8 @@ describe('predefined options', function()
     const options = {fields: {}}
     const type = require('./fixture/8.json')
 
-    const wrapper = mount(
-      <Builder factories={factories} options={options} type={type}/>
-    )
+    const wrapper = mount(<Builder factories={factories} options={options}
+      type={type}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
@@ -162,9 +161,8 @@ describe('predefined options', function()
     const options = {}
     const type = require('./fixture/7.json')
 
-    const wrapper = mount(
-      <Builder factories={factories} options={options} type={type}/>
-    )
+    const wrapper = mount(<Builder factories={factories} options={options}
+      type={type}/>)
 
     expect(wrapper).toMatchSnapshot()
   })

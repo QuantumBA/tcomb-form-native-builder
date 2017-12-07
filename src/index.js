@@ -5,7 +5,7 @@ import transform          from 'tcomb-json-schema'
 const {Form} = t.form
 
 
-function getOptions({factory, items, properties={}}, options, factories={})
+function getOptions({factory, items, properties = {}}, options, factories = {})
 {
   if(factory)
   {
@@ -14,7 +14,7 @@ function getOptions({factory, items, properties={}}, options, factories={})
       const factoryName = factory
       factory = factories[factoryName]
       if(!factory)
-        throw ReferenceError(`Factory '${factoryName}' not registered`)
+        throw new ReferenceError(`Factory '${factoryName}' not registered`)
     }
 
     options = options || {}
