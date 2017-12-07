@@ -147,8 +147,8 @@ describe('predefined options', function()
 
   test('object property', function()
   {
-    const options = {fields: {street_type: {label: 'label'}}}
-    const type = require('./fixture/4.json')
+    const options = {fields: {}}
+    const type = require('./fixture/8.json')
 
     const wrapper = mount(
       <Builder factories={factories} options={options} type={type}/>
@@ -159,8 +159,8 @@ describe('predefined options', function()
 
   test('array item', function()
   {
-    const options = {item: {label: 'label'}}
-    const type = require('./fixture/5.json')
+    const options = {}
+    const type = require('./fixture/7.json')
 
     const wrapper = mount(
       <Builder factories={factories} options={options} type={type}/>

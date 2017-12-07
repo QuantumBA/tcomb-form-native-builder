@@ -7616,14 +7616,7 @@ exports[`predefined options array item 1`] = `
       "customFactory": [Function],
     }
   }
-  options={
-    Object {
-      "item": Object {
-        "factory": [Function],
-        "label": "label",
-      },
-    }
-  }
+  options={Object {}}
   type={
     Object {
       "items": Object {
@@ -7632,7 +7625,6 @@ exports[`predefined options array item 1`] = `
           "Avenue",
           "Boulevard",
         ],
-        "factory": "customFactory",
         "type": "string",
       },
       "type": "array",
@@ -7655,14 +7647,7 @@ exports[`predefined options array item 1`] = `
         "up": "↑",
       }
     }
-    options={
-      Object {
-        "item": Object {
-          "factory": [Function],
-          "label": "label",
-        },
-      }
-    }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -8060,14 +8045,7 @@ exports[`predefined options array item 1`] = `
         }
       }
       onChange={[Function]}
-      options={
-        Object {
-          "item": Object {
-            "factory": [Function],
-            "label": "label",
-          },
-        }
-      }
+      options={Object {}}
       type={[Function]}
     >
       <Component
@@ -8125,12 +8103,7 @@ exports[`predefined options object property 1`] = `
   }
   options={
     Object {
-      "fields": Object {
-        "street_type": Object {
-          "factory": [Function],
-          "label": "label",
-        },
-      },
+      "fields": Object {},
     }
   }
   type={
@@ -8142,7 +8115,6 @@ exports[`predefined options object property 1`] = `
             "Avenue",
             "Boulevard",
           ],
-          "factory": "customFactory",
           "type": "string",
         },
       },
@@ -8168,12 +8140,7 @@ exports[`predefined options object property 1`] = `
     }
     options={
       Object {
-        "fields": Object {
-          "street_type": Object {
-            "factory": [Function],
-            "label": "label",
-          },
-        },
+        "fields": Object {},
       }
     }
     stylesheet={
@@ -8575,12 +8542,7 @@ exports[`predefined options object property 1`] = `
       onChange={[Function]}
       options={
         Object {
-          "fields": Object {
-            "street_type": Object {
-              "factory": [Function],
-              "label": "label",
-            },
-          },
+          "fields": Object {},
         }
       }
       type={[Function]}
@@ -8589,7 +8551,7 @@ exports[`predefined options object property 1`] = `
         style={Object {}}
       >
         <react-native-mock>
-          <Textbox
+          <Select
             ctx={
               Object {
                 "auto": "labels",
@@ -8800,12 +8762,7 @@ exports[`predefined options object property 1`] = `
             }
             key="street_type"
             onChange={[Function]}
-            options={
-              Object {
-                "factory": [Function],
-                "label": "label",
-              }
-            }
+            options={Object {}}
             type={[Function]}
           >
             <Component
@@ -8827,39 +8784,328 @@ exports[`predefined options object property 1`] = `
                   }
                 >
                   <react-native-mock>
-                    label
+                    Street type (optional)
                   </react-native-mock>
                 </Component>
-                <Component
-                  style={Object {}}
+                <CollapsiblePickerIOS
+                  locals={
+                    Object {
+                      "config": Object {},
+                      "enabled": undefined,
+                      "error": undefined,
+                      "hasError": false,
+                      "help": undefined,
+                      "hidden": undefined,
+                      "itemStyle": undefined,
+                      "label": "Street type (optional)",
+                      "mode": undefined,
+                      "onChange": [Function],
+                      "options": Array [
+                        Object {
+                          "text": "-",
+                          "value": "",
+                        },
+                        Object {
+                          "text": "Street",
+                          "value": "Street",
+                        },
+                        Object {
+                          "text": "Avenue",
+                          "value": "Avenue",
+                        },
+                        Object {
+                          "text": "Boulevard",
+                          "value": "Boulevard",
+                        },
+                      ],
+                      "path": Array [
+                        "street_type",
+                      ],
+                      "prompt": undefined,
+                      "stylesheet": Object {
+                        "button": Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#48BBEC",
+                          "borderColor": "#48BBEC",
+                          "borderRadius": 8,
+                          "borderWidth": 1,
+                          "height": 36,
+                          "justifyContent": "center",
+                          "marginBottom": 10,
+                        },
+                        "buttonText": Object {
+                          "alignSelf": "center",
+                          "color": "white",
+                          "fontSize": 18,
+                        },
+                        "checkbox": Object {
+                          "error": Object {
+                            "marginBottom": 4,
+                          },
+                          "normal": Object {
+                            "marginBottom": 4,
+                          },
+                        },
+                        "controlLabel": Object {
+                          "error": Object {
+                            "color": "#a94442",
+                            "fontSize": 17,
+                            "fontWeight": "500",
+                            "marginBottom": 7,
+                          },
+                          "normal": Object {
+                            "color": "#000000",
+                            "fontSize": 17,
+                            "fontWeight": "500",
+                            "marginBottom": 7,
+                          },
+                        },
+                        "dateTouchable": Object {
+                          "error": Object {},
+                          "normal": Object {},
+                        },
+                        "dateValue": Object {
+                          "error": Object {
+                            "color": "#a94442",
+                            "fontSize": 17,
+                            "marginBottom": 5,
+                            "padding": 7,
+                          },
+                          "normal": Object {
+                            "color": "#000000",
+                            "fontSize": 17,
+                            "marginBottom": 5,
+                            "padding": 7,
+                          },
+                        },
+                        "datepicker": Object {
+                          "error": Object {
+                            "marginBottom": 4,
+                          },
+                          "normal": Object {
+                            "marginBottom": 4,
+                          },
+                        },
+                        "errorBlock": Object {
+                          "color": "#a94442",
+                          "fontSize": 17,
+                          "marginBottom": 2,
+                        },
+                        "fieldset": Object {},
+                        "formGroup": Object {
+                          "error": Object {
+                            "marginBottom": 10,
+                          },
+                          "normal": Object {
+                            "marginBottom": 10,
+                          },
+                        },
+                        "helpBlock": Object {
+                          "error": Object {
+                            "color": "#999999",
+                            "fontSize": 17,
+                            "marginBottom": 2,
+                          },
+                          "normal": Object {
+                            "color": "#999999",
+                            "fontSize": 17,
+                            "marginBottom": 2,
+                          },
+                        },
+                        "pickerContainer": Object {
+                          "error": Object {
+                            "borderColor": "#a94442",
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "marginBottom": 4,
+                          },
+                          "normal": Object {
+                            "borderColor": "#cccccc",
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "marginBottom": 4,
+                          },
+                          "open": Object {},
+                        },
+                        "pickerTouchable": Object {
+                          "active": Object {
+                            "borderBottomWidth": 1,
+                            "borderColor": "#cccccc",
+                          },
+                          "error": Object {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                            "height": 44,
+                          },
+                          "normal": Object {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                            "height": 44,
+                          },
+                        },
+                        "pickerValue": Object {
+                          "error": Object {
+                            "fontSize": 17,
+                            "paddingLeft": 7,
+                          },
+                          "normal": Object {
+                            "fontSize": 17,
+                            "paddingLeft": 7,
+                          },
+                        },
+                        "select": Object {
+                          "error": Object {},
+                          "normal": Object {},
+                        },
+                        "textbox": Object {
+                          "error": Object {
+                            "borderColor": "#a94442",
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "color": "#000000",
+                            "fontSize": 17,
+                            "height": 36,
+                            "marginBottom": 5,
+                            "paddingHorizontal": 7,
+                            "paddingVertical": 7,
+                          },
+                          "normal": Object {
+                            "borderColor": "#cccccc",
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "color": "#000000",
+                            "fontSize": 17,
+                            "height": 36,
+                            "marginBottom": 5,
+                            "paddingHorizontal": 7,
+                            "paddingVertical": 7,
+                          },
+                          "notEditable": Object {
+                            "backgroundColor": "#eeeeee",
+                            "borderColor": "#cccccc",
+                            "borderRadius": 4,
+                            "borderWidth": 1,
+                            "color": "#777777",
+                            "fontSize": 17,
+                            "height": 36,
+                            "marginBottom": 5,
+                            "paddingHorizontal": 7,
+                            "paddingVertical": 7,
+                          },
+                        },
+                        "textboxView": Object {
+                          "error": Object {},
+                          "normal": Object {},
+                          "notEditable": Object {},
+                        },
+                      },
+                      "value": "",
+                    }
+                  }
                 >
-                  <react-native-mock>
-                    <Component
-                      accessibilityLabel="label"
-                      onChangeText={[Function]}
-                      style={
+                  <Component
+                    style={
+                      Array [
                         Object {
                           "borderColor": "#cccccc",
                           "borderRadius": 4,
                           "borderWidth": 1,
-                          "color": "#000000",
-                          "fontSize": 17,
-                          "height": 36,
-                          "marginBottom": 5,
-                          "paddingHorizontal": 7,
-                          "paddingVertical": 7,
+                          "marginBottom": 4,
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    <react-native-mock>
+                      <Component
+                        onPress={[Function]}
+                        style={
+                          Array [
+                            Object {
+                              "alignItems": "center",
+                              "flexDirection": "row",
+                              "height": 44,
+                            },
+                            Object {},
+                          ]
                         }
-                      }
-                      underlineColorAndroid="transparent"
-                      value=""
-                    >
-                      <react-native-mock />
-                    </Component>
-                  </react-native-mock>
-                </Component>
+                      >
+                        <react-native-mock>
+                          <Component
+                            style={
+                              Object {
+                                "fontSize": 17,
+                                "paddingLeft": 7,
+                              }
+                            }
+                          >
+                            <react-native-mock>
+                              -
+                            </react-native-mock>
+                          </Component>
+                        </react-native-mock>
+                      </Component>
+                      <AnimatedComponent
+                        style={
+                          Object {
+                            "height": AnimatedValue {
+                              "_animation": null,
+                              "_children": Array [],
+                              "_listeners": Object {},
+                              "_offset": 0,
+                              "_value": 0,
+                            },
+                            "overflow": "hidden",
+                          }
+                        }
+                      >
+                        <Component>
+                          <react-native-mock>
+                            <Component
+                              accessibilityLabel="Street type (optional)"
+                              onValueChange={[Function]}
+                              selectedValue=""
+                              style={Object {}}
+                            >
+                              <react-native-mock>
+                                <Picker.Item
+                                  label="-"
+                                  value=""
+                                >
+                                  <react-native-mock />
+                                </Picker.Item>
+                                <Picker.Item
+                                  key="Street"
+                                  label="Street"
+                                  value="Street"
+                                >
+                                  <react-native-mock />
+                                </Picker.Item>
+                                <Picker.Item
+                                  key="Avenue"
+                                  label="Avenue"
+                                  value="Avenue"
+                                >
+                                  <react-native-mock />
+                                </Picker.Item>
+                                <Picker.Item
+                                  key="Boulevard"
+                                  label="Boulevard"
+                                  value="Boulevard"
+                                >
+                                  <react-native-mock />
+                                </Picker.Item>
+                              </react-native-mock>
+                            </Component>
+                          </react-native-mock>
+                        </Component>
+                      </AnimatedComponent>
+                    </react-native-mock>
+                  </Component>
+                </CollapsiblePickerIOS>
               </react-native-mock>
             </Component>
-          </Textbox>
+          </Select>
         </react-native-mock>
       </Component>
     </Struct>
