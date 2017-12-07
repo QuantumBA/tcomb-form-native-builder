@@ -87,27 +87,23 @@ it('update definition', function()
 
 describe('custom factories', function()
 {
+  const factories = {customFactory: Textbox}
+
   test('root element', function()
   {
-    const factories = {customFactory: Textbox}
-
     const wrapper = mount(
       <Builder type={require('./fixture/3.json')} factories={factories}/>
     )
 
     expect(wrapper).toMatchSnapshot()
-    // expect(factory)
   })
 
   test('object property', function()
   {
-    const factories = {customFactory: Textbox}
-
     const wrapper = mount(
       <Builder type={require('./fixture/4.json')} factories={factories}/>
     )
 
     expect(wrapper).toMatchSnapshot()
-    // expect(factory)
   })
 })
