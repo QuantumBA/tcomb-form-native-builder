@@ -51,7 +51,7 @@ function getOptions({factory, items, properties = {}}, options, factories = {})
 
 function getPropState(type, children, options, factories)
 {
-  type = type || children || {}  // { type: 'null' }
+  type = type || children || {}
 
   // string to JSON object
   if(typeof type === 'string') type = JSON.parse(type)
