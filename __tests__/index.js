@@ -115,4 +115,14 @@ describe('custom factories', function()
 
     expect(wrapper).toThrowErrorMatchingSnapshot()
   })
+
+  test('explicit factory', function()
+  {
+    const type = require('./fixture/1.json')
+    type.factory = Textbox
+
+    const wrapper = mount(<Builder type={type}/>)
+
+    expect(wrapper).toMatchSnapshot()
+  })
 })
