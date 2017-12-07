@@ -140,3 +140,32 @@ describe('custom factories', function()
     expect(wrapper).toMatchSnapshot()
   })
 })
+
+describe('predefined options', function()
+{
+  const factories = {customFactory: Textbox}
+
+  test('object property', function()
+  {
+    const options = {fields: {street_type: {label: 'label'}}}
+    const type = require('./fixture/4.json')
+
+    const wrapper = mount(
+      <Builder factories={factories} options={options} type={type}/>
+    )
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  test('array item', function()
+  {
+    const options = {item: {label: 'label'}}
+    const type = require('./fixture/5.json')
+
+    const wrapper = mount(
+      <Builder factories={factories} options={options} type={type}/>
+    )
+
+    expect(wrapper).toMatchSnapshot()
+  })
+})
