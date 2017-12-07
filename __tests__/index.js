@@ -107,6 +107,20 @@ describe('custom factories', function()
     expect(wrapper).toMatchSnapshot()
   })
 
+  test('array item', function()
+  {
+    const wrapper = mount(
+      <Builder type={require('./fixture/5.json')} factories={factories}/>
+    )
+
+    expect(wrapper).toMatchSnapshot()
+
+    // Add an item in the list
+    wrapper.find('TouchableHighlight').props().onPress()
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
   test('unknown factory', function()
   {
     const type = require('./fixture/6.json')
