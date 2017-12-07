@@ -1223,6 +1223,8 @@ exports[`custom factories root element 1`] = `
 </Builder>
 `;
 
+exports[`custom factories unknown factory 1`] = `"Factory 'no-exists' not registered"`;
+
 exports[`load definition JSON object body 1`] = `
 <Builder>
   <Form

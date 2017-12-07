@@ -106,4 +106,13 @@ describe('custom factories', function()
 
     expect(wrapper).toMatchSnapshot()
   })
+
+  test('unknown factory', function()
+  {
+    const type = require('./fixture/6.json')
+
+    const wrapper = () => mount(<Builder type={type} factories={factories}/>)
+
+    expect(wrapper).toThrowErrorMatchingSnapshot()
+  })
 })

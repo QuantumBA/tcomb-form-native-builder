@@ -1,0 +1,5 @@
+{
+  "type": "string",
+  "factory": "no-exists",
+  "enum": ["Street", "Avenue", "Boulevard"]
+}
