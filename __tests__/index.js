@@ -2,6 +2,7 @@ import {mount}   from 'enzyme'
 import React     from 'react'
 import {Textbox} from 'tcomb-form-native/lib/components'
 import transform from 'tcomb-json-schema'
+import templates from 'tcomb-form-native/lib/templates/bootstrap'
 
 import Builder from '..'
 
@@ -13,7 +14,7 @@ describe('load definition', function()
 {
   test('no definition', function()
   {
-    const wrapper = mount(<Builder/>)
+    const wrapper = mount(<Builder templates={templates}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
@@ -24,14 +25,14 @@ describe('load definition', function()
 
     test('prop', function()
     {
-      const wrapper = mount(<Builder type={json}/>)
+      const wrapper = mount(<Builder templates={templates} type={json}/>)
 
       expect(wrapper).toMatchSnapshot()
     })
 
     test('body', function()
     {
-      const wrapper = mount(<Builder>{json}</Builder>)
+      const wrapper = mount(<Builder templates={templates}>{json}</Builder>)
 
       expect(wrapper).toMatchSnapshot()
     })
@@ -41,14 +42,14 @@ describe('load definition', function()
   {
     test('prop', function()
     {
-      const wrapper = mount(<Builder type={fixture}/>)
+      const wrapper = mount(<Builder templates={templates} type={fixture}/>)
 
       expect(wrapper).toMatchSnapshot()
     })
 
     test('body', function()
     {
-      const wrapper = mount(<Builder>{fixture}</Builder>)
+      const wrapper = mount(<Builder templates={templates}>{fixture}</Builder>)
 
       expect(wrapper).toMatchSnapshot()
     })
@@ -60,14 +61,14 @@ describe('load definition', function()
 
     test('prop', function()
     {
-      const wrapper = mount(<Builder type={tcomb}/>)
+      const wrapper = mount(<Builder templates={templates} type={tcomb}/>)
 
       expect(wrapper).toMatchSnapshot()
     })
 
     test('body', function()
     {
-      const wrapper = mount(<Builder>{tcomb}</Builder>)
+      const wrapper = mount(<Builder templates={templates}>{tcomb}</Builder>)
 
       expect(wrapper).toMatchSnapshot()
     })
@@ -76,7 +77,7 @@ describe('load definition', function()
 
 test('update definition', function()
 {
-  const wrapper = mount(<Builder type={fixture}/>)
+  const wrapper = mount(<Builder templates={templates} type={fixture}/>)
 
   expect(wrapper).toMatchSnapshot()
 
@@ -91,24 +92,24 @@ describe('custom factories', function()
 
   test('root element', function()
   {
-    const wrapper = mount(<Builder type={require('./fixture/3.json')}
-      factories={factories}/>)
+    const wrapper = mount(<Builder templates={templates}
+      type={require('./fixture/3.json')} factories={factories}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
 
   test('object property', function()
   {
-    const wrapper = mount(<Builder type={require('./fixture/4.json')}
-      factories={factories}/>)
+    const wrapper = mount(<Builder templates={templates}
+      type={require('./fixture/4.json')} factories={factories}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
 
   test('array item', function()
   {
-    const wrapper = mount(<Builder type={require('./fixture/5.json')}
-      factories={factories}/>)
+    const wrapper = mount(<Builder templates={templates}
+      type={require('./fixture/5.json')} factories={factories}/>)
 
     expect(wrapper).toMatchSnapshot()
 
@@ -124,7 +125,7 @@ describe('custom factories', function()
 
     function wrapper()
     {
-      mount(<Builder type={type} factories={factories}/>)
+      mount(<Builder type={type} templates={templates} factories={factories}/>)
     }
 
     expect(wrapper).toThrowErrorMatchingSnapshot()
@@ -135,7 +136,7 @@ describe('custom factories', function()
     const type = require('./fixture/1.json')
     type.factory = Textbox
 
-    const wrapper = mount(<Builder type={type}/>)
+    const wrapper = mount(<Builder templates={templates} type={type}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
@@ -150,8 +151,8 @@ describe('predefined options', function()
     const options = {fields: {}}
     const type = require('./fixture/8.json')
 
-    const wrapper = mount(<Builder factories={factories} options={options}
-      type={type}/>)
+    const wrapper = mount(<Builder templates={templates} factories={factories}
+      options={options} type={type}/>)
 
     expect(wrapper).toMatchSnapshot()
   })
@@ -161,8 +162,8 @@ describe('predefined options', function()
     const options = {}
     const type = require('./fixture/7.json')
 
-    const wrapper = mount(<Builder factories={factories} options={options}
-      type={type}/>)
+    const wrapper = mount(<Builder templates={templates} factories={factories}
+      options={options} type={type}/>)
 
     expect(wrapper).toMatchSnapshot()
   })

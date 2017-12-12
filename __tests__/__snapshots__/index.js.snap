@@ -7,6 +7,16 @@ exports[`custom factories array item 1`] = `
       "customFactory": [Function],
     }
   }
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "items": Object {
@@ -499,6 +509,16 @@ exports[`custom factories array item 2`] = `
       "customFactory": [Function],
     }
   }
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "items": Object {
@@ -986,6 +1006,16 @@ exports[`custom factories array item 2`] = `
 
 exports[`custom factories explicit factory 1`] = `
 <Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "enum": Array [
@@ -1464,6 +1494,16 @@ exports[`custom factories object property 1`] = `
   factories={
     Object {
       "customFactory": [Function],
+    }
+  }
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
     }
   }
   type={
@@ -2199,6 +2239,16 @@ exports[`custom factories root element 1`] = `
       "customFactory": [Function],
     }
   }
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "enum": Array [
@@ -2675,7 +2725,18 @@ exports[`custom factories root element 1`] = `
 exports[`custom factories unknown factory 1`] = `"Factory 'no-exists' not registered"`;
 
 exports[`load definition JSON object body 1`] = `
-<Builder>
+<Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
+>
   <Form
     i18n={
       Object {
@@ -3417,6 +3478,16 @@ exports[`load definition JSON object body 1`] = `
 
 exports[`load definition JSON object prop 1`] = `
 <Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "enum": Array [
@@ -4168,7 +4239,18 @@ exports[`load definition JSON object prop 1`] = `
 `;
 
 exports[`load definition JSON string body 1`] = `
-<Builder>
+<Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
+>
   <Form
     i18n={
       Object {
@@ -4910,6 +4992,16 @@ exports[`load definition JSON string body 1`] = `
 
 exports[`load definition JSON string prop 1`] = `
 <Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type="{\\"type\\":\\"string\\",\\"enum\\":[\\"Street\\",\\"Avenue\\",\\"Boulevard\\"]}"
 >
   <Form
@@ -5652,7 +5744,18 @@ exports[`load definition JSON string prop 1`] = `
 `;
 
 exports[`load definition no definition 1`] = `
-<Builder>
+<Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
+>
   <Form
     i18n={
       Object {
@@ -6106,7 +6209,18 @@ exports[`load definition no definition 1`] = `
 `;
 
 exports[`load definition tcomb object body 1`] = `
-<Builder>
+<Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
+>
   <Form
     i18n={
       Object {
@@ -6848,6 +6962,16 @@ exports[`load definition tcomb object body 1`] = `
 
 exports[`load definition tcomb object prop 1`] = `
 <Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={[Function]}
 >
   <Form
@@ -7597,6 +7721,16 @@ exports[`predefined options array item 1`] = `
     }
   }
   options={Object {}}
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "items": Object {
@@ -8079,6 +8213,16 @@ exports[`predefined options object property 1`] = `
   options={
     Object {
       "fields": Object {},
+    }
+  }
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
     }
   }
   type={
@@ -9085,6 +9229,16 @@ exports[`predefined options object property 1`] = `
 
 exports[`update definition 1`] = `
 <Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "enum": Array [
@@ -9837,6 +9991,16 @@ exports[`update definition 1`] = `
 
 exports[`update definition 2`] = `
 <Builder
+  templates={
+    Object {
+      "checkbox": [Function],
+      "datepicker": [Function],
+      "list": [Function],
+      "select": [Function],
+      "struct": [Function],
+      "textbox": [Function],
+    }
+  }
   type={
     Object {
       "pattern": "^abc$",

@@ -86,7 +86,7 @@ export default class Builder extends Component
     onChange: PropTypes.func,
     options: PropTypes.object,
     stylesheet: PropTypes.object,
-    templates: PropTypes.object,
+    templates: PropTypes.object.isRequired,
     // type: Type,
     value: PropTypes.any
   }
@@ -114,7 +114,7 @@ export default class Builder extends Component
       onChange={onChange}
       options={options}
       stylesheet={stylesheet || defaultStylesheet}
-      templates={templates || require('tcomb-form-native/lib/templates/bootstrap')}
+      templates={templates}
       type={type}
       value={value}
     />
