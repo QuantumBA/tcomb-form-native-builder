@@ -45,10 +45,10 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/*.js"
+      "*.js"
     ],
     "preset": "jest-react-native",
-    "setupTestFrameworkScriptFile": "./src/setupTests.js",
+    "setupTestFrameworkScriptFile": "./setupTests.js",
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],

@@ -3,7 +3,7 @@ import React     from 'react'
 import {Textbox} from 'tcomb-form-native/lib/components'
 import transform from 'tcomb-json-schema'
 
-import Builder from '../src'
+import Builder from '..'
 
 
 const fixture = require('./fixture/1.json')
