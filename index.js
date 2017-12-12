@@ -1,3 +1,4 @@
+import PropTypes          from 'prop-types'
 import React, {Component} from 'react'
 import t                  from 'tcomb-form-native/lib'
 import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
@@ -8,6 +9,9 @@ const {Form} = t.form
 
 Form.i18n       = defaultI18n
 Form.stylesheet = defaultStylesheet
+
+
+// const Type = PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 
 
 function getOptions({factory, items, properties = {}}, options, factories = {})
@@ -73,6 +77,20 @@ function getPropState(type, children, options, factories)
 
 export default class Builder extends Component
 {
+  static propTypes =
+  {
+    // children: Type,
+    context: PropTypes.object,
+    factories: PropTypes.object,
+    i18n: PropTypes.object,
+    onChange: PropTypes.func,
+    options: PropTypes.object,
+    stylesheet: PropTypes.object,
+    templates: PropTypes.object,
+    // type: Type,
+    value: PropTypes.any
+  }
+
   constructor({type, children, options, factories})
   {
     super()
