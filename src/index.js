@@ -1,8 +1,13 @@
 import React, {Component} from 'react'
-import t                  from 'tcomb-form-native'
+import t                  from 'tcomb-form-native/lib'
+import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
+import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
 
 const {Form} = t.form
+
+Form.i18n       = defaultI18n
+Form.stylesheet = defaultStylesheet
 
 
 function getOptions({factory, items, properties = {}}, options, factories = {})
@@ -82,8 +87,18 @@ export default class Builder extends Component
 
   render()
   {
+    const {context, i18n, onChange, stylesheet, templates, value} = this.props
     const {options, type} = this.state
 
-    return <Form {...this.props} options={options} type={type}/>
+    return <Form
+      context={context}
+      i18n={i18n || defaultI18n}
+      onChange={onChange}
+      options={options}
+      stylesheet={stylesheet || defaultStylesheet}
+      templates={templates || require('tcomb-form-native/lib/templates/bootstrap')}
+      type={type}
+      value={value}
+    />
   }
 }

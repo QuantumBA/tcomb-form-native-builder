@@ -23,11 +23,6 @@ exports[`custom factories array item 1`] = `
   }
 >
   <Form
-    factories={
-      Object {
-        "customFactory": [Function],
-      }
-    }
     i18n={
       Object {
         "add": "Add",
@@ -520,11 +515,6 @@ exports[`custom factories array item 2`] = `
   }
 >
   <Form
-    factories={
-      Object {
-        "customFactory": [Function],
-      }
-    }
     i18n={
       Object {
         "add": "Add",
@@ -1494,11 +1484,6 @@ exports[`custom factories object property 1`] = `
   }
 >
   <Form
-    factories={
-      Object {
-        "customFactory": [Function],
-      }
-    }
     i18n={
       Object {
         "add": "Add",
@@ -2227,11 +2212,6 @@ exports[`custom factories root element 1`] = `
   }
 >
   <Form
-    factories={
-      Object {
-        "customFactory": [Function],
-      }
-    }
     i18n={
       Object {
         "add": "Add",
@@ -7632,11 +7612,6 @@ exports[`predefined options array item 1`] = `
   }
 >
   <Form
-    factories={
-      Object {
-        "customFactory": [Function],
-      }
-    }
     i18n={
       Object {
         "add": "Add",
@@ -8123,11 +8098,6 @@ exports[`predefined options object property 1`] = `
   }
 >
   <Form
-    factories={
-      Object {
-        "customFactory": [Function],
-      }
-    }
     i18n={
       Object {
         "add": "Add",
