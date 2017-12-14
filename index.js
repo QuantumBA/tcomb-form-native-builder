@@ -14,7 +14,14 @@ Form.stylesheet = defaultStylesheet
 // const Type = PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 
 
-function getOptions({factory, items, properties = {}}, options, factories = {})
+function filterComponentOptions(entry)
+{
+  // TODO get type properties dynamically relative to each type
+  return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type'].includes(entry[0])
+}
+
+
+function getOptions({factory, items, properties = {}, ...componentOptions}, options, factories = {})
 {
   if(factory)
   {
@@ -54,6 +61,14 @@ function getOptions({factory, items, properties = {}}, options, factories = {})
       options.fields[name] = result
     }
   }
+
+  // Component specific options
+  Object.entries(componentOptions).filter(filterComponentOptions)
+  .forEach(function([key, value])
+  {
+    options = options || {}
+    options[key] = value
+  })
 
   return options
 }
