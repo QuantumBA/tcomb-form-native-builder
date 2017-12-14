@@ -58,7 +58,7 @@ function getOptions({factory, items, properties = {}}, options, factories = {})
   return options
 }
 
-function getPropState({children, factories, options, type})
+function getPropState({children, factories, formats = {}, options, type, types = {}})
 {
   type = type || children || {}
 
@@ -67,6 +67,10 @@ function getPropState({children, factories, options, type})
 
   // Get fields options from JSON object
   options = getOptions(type, options, factories)
+
+  // Register formats and types
+  Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
+  Object.entries(types).forEach(entry => transform.registerType(...entry))
 
   // JSON object to tcomb
   if(!(type instanceof Function)) type = transform(type)
@@ -100,6 +104,10 @@ export default class Builder extends Component
 
   componentWillReceiveProps(props)
   {
+    // Remove all the registered formats and types
+    transform.resetFormats()
+    transform.resetTypes()
+
     this.setState(getPropState(props))
   }
 
