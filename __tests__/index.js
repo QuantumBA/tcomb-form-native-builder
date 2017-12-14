@@ -168,3 +168,22 @@ describe('predefined options', function()
     expect(wrapper).toMatchSnapshot()
   })
 })
+
+test('component options', function()
+{
+  const tcombFormComponent = jest.fn(() => null)
+
+  const customType = Builder.t.subtype(Builder.t.Str, s => s, 'customType')
+  customType.getTcombFormFactory = jest.fn(() => tcombFormComponent)
+
+  const types = {customType}
+  const type = require('./fixture/9.json')
+
+  const wrapper = mount(<Builder templates={templates} type={type}
+    types={types}/>)
+
+  expect(wrapper).toMatchSnapshot()
+
+  expect(tcombFormComponent.mock.calls.length).toBe(1)
+  expect(tcombFormComponent.mock.calls[0][0]).toMatchObject({options: {componentOption: 'blah'}})
+})
