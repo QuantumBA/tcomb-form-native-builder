@@ -79,7 +79,7 @@ function getPropState({children, factories, formats = {}, options, type, types =
 }
 
 
-export default class Builder extends Component
+class Builder extends Component
 {
   static propTypes =
   {
@@ -128,3 +128,10 @@ export default class Builder extends Component
     />
   }
 }
+
+
+// Export `tcomb` types
+Builder.t = t
+
+
+export default Builder
