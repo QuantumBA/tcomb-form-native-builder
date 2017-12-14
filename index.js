@@ -58,7 +58,7 @@ function getOptions({factory, items, properties = {}}, options, factories = {})
   return options
 }
 
-function getPropState(type, children, options, factories)
+function getPropState({children, factories, options, type})
 {
   type = type || children || {}
 
@@ -91,16 +91,16 @@ export default class Builder extends Component
     value: PropTypes.any
   }
 
-  constructor({type, children, options, factories})
+  constructor(props)
   {
-    super()
+    super(props)
 
-    this.state = getPropState(type, children, options, factories)
+    this.state = getPropState(props)
   }
 
-  componentWillReceiveProps({type, children, options, factories})
+  componentWillReceiveProps(props)
   {
-    this.setState(getPropState(type, children, options, factories))
+    this.setState(getPropState(props))
   }
 
   render()
