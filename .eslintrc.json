@@ -24,7 +24,7 @@
     "array-callback-return": "error",
     "array-element-newline": "error",
     "arrow-body-style": "error",
-    "arrow-parens": "warn",
+    "arrow-parens": ["warn", "as-needed"],
     "arrow-spacing": "error",
     "block-scoped-var": "error",
     "block-spacing": "error",
