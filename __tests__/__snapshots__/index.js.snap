@@ -3196,6 +3196,7 @@ exports[`load definition JSON object body 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -3958,6 +3959,7 @@ exports[`load definition JSON object prop 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -4710,6 +4712,7 @@ exports[`load definition JSON string body 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -5463,6 +5466,7 @@ exports[`load definition JSON string prop 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -6215,6 +6219,7 @@ exports[`load definition no definition 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -6680,6 +6685,7 @@ exports[`load definition tcomb object body 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -7433,6 +7439,7 @@ exports[`load definition tcomb object prop 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -8168,7 +8175,11 @@ exports[`predefined options array item 1`] = `
       "customFactory": [Function],
     }
   }
-  options={Object {}}
+  options={
+    Object {
+      "item": Object {},
+    }
+  }
   templates={
     Object {
       "checkbox": [Function],
@@ -8204,7 +8215,11 @@ exports[`predefined options array item 1`] = `
         "up": "↑",
       }
     }
-    options={Object {}}
+    options={
+      Object {
+        "item": Object {},
+      }
+    }
     stylesheet={
       Object {
         "button": Object {
@@ -8602,7 +8617,11 @@ exports[`predefined options array item 1`] = `
         }
       }
       onChange={[Function]}
-      options={Object {}}
+      options={
+        Object {
+          "item": Object {},
+        }
+      }
       type={[Function]}
     >
       <Component
@@ -8660,7 +8679,9 @@ exports[`predefined options object property 1`] = `
   }
   options={
     Object {
-      "fields": Object {},
+      "fields": Object {
+        "street_type": Object {},
+      },
     }
   }
   templates={
@@ -8702,7 +8723,9 @@ exports[`predefined options object property 1`] = `
     }
     options={
       Object {
-        "fields": Object {},
+        "fields": Object {
+          "street_type": Object {},
+        },
       }
     }
     stylesheet={
@@ -9104,7 +9127,9 @@ exports[`predefined options object property 1`] = `
       onChange={[Function]}
       options={
         Object {
-          "fields": Object {},
+          "fields": Object {
+            "street_type": Object {},
+          },
         }
       }
       type={[Function]}
@@ -9709,6 +9734,7 @@ exports[`update definition 1`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {
@@ -10467,6 +10493,7 @@ exports[`update definition 2`] = `
         "up": "↑",
       }
     }
+    options={Object {}}
     stylesheet={
       Object {
         "button": Object {

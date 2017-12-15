@@ -21,8 +21,10 @@ function filterComponentOptions(entry)
 }
 
 
-function getOptions({factory, items, properties = {}, ...componentOptions}, options, factories = {})
+function getOptions({factory, items, properties = {}, ...componentOptions}, options = {}, factories = {})
 {
+  Object.defineProperty(options, 'form', {get: () => this})
+
   if(factory)
   {
     if(typeof factory === 'string')
@@ -33,40 +35,31 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
         throw new ReferenceError(`Factory '${factoryName}' not registered`)
     }
 
-    options = options || {}
     options.factory = factory
   }
 
   // array items
   if(items)
   {
-    const result = getOptions(items, options && options.item, factories)
+    const result = getOptions.call(this, items, options.item, factories)
     if(result)
-    {
-      options = options || {}
       options.item = result
-    }
   }
 
   // object properties
+  let {fields} = options
   for(const name in properties)
   {
-    const propertyOptions = options && options.fields && options.fields[name]
-
-    const result = getOptions(properties[name], propertyOptions, factories)
+    const result = getOptions.call(this, properties[name], fields && fields[name], factories)
     if(result)
-    {
-      options = options || {}
-      options.fields = options.fields || {}
-      options.fields[name] = result
-    }
+      fields = {...fields, [name]: result}
   }
+  if(fields) options.fields = fields
 
   // Component specific options
   Object.entries(componentOptions).filter(filterComponentOptions)
   .forEach(function([key, value])
   {
-    options = options || {}
     options[key] = value
   })
 
@@ -81,7 +74,7 @@ function getPropState({children, factories, formats = {}, options, type, types =
   if(typeof type === 'string') type = JSON.parse(type)
 
   // Get fields options from JSON object
-  options = getOptions(type, options, factories)
+  options = getOptions.call(this, type, options, factories)
 
   // Register formats and types
   Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
@@ -114,7 +107,7 @@ class Builder extends Component
   {
     super(props)
 
-    this.state = getPropState(props)
+    this.state = getPropState.call(this._root, props)
   }
 
   componentWillReceiveProps(props)
@@ -123,7 +116,7 @@ class Builder extends Component
     transform.resetFormats()
     transform.resetTypes()
 
-    this.setState(getPropState(props))
+    this.setState(getPropState.call(this._root, props))
   }
 
   render()
@@ -136,6 +129,7 @@ class Builder extends Component
       i18n={i18n || defaultI18n}
       onChange={onChange}
       options={options}
+      ref={component => this._root = component}
       stylesheet={stylesheet || defaultStylesheet}
       templates={templates}
       type={type}
