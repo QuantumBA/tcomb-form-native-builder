@@ -68,6 +68,11 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
 
 function getPropState({children, factories, formats = {}, options, type, types = {}})
 {
+  // Remove all the registered formats and types
+  transform.resetFormats()
+  transform.resetTypes()
+
+  // Get type definition
   type = type || children || {}
 
   // string to JSON object
@@ -112,10 +117,6 @@ class Builder extends Component
 
   componentWillReceiveProps(props)
   {
-    // Remove all the registered formats and types
-    transform.resetFormats()
-    transform.resetTypes()
-
     this.setState(getPropState.call(this._root, props))
   }
 
