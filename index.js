@@ -72,6 +72,10 @@ function getPropState({children, factories, formats = {}, options, type, types =
   transform.resetFormats()
   transform.resetTypes()
 
+  // Register formats and types
+  Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
+  Object.entries(types).forEach(entry => transform.registerType(...entry))
+
   // Get type definition
   type = type || children || {}
 
@@ -80,10 +84,6 @@ function getPropState({children, factories, formats = {}, options, type, types =
 
   // Get fields options from JSON object
   options = getOptions.call(this, type, options, factories)
-
-  // Register formats and types
-  Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
-  Object.entries(types).forEach(entry => transform.registerType(...entry))
 
   // JSON object to tcomb
   if(!(type instanceof Function)) type = transform(type)
