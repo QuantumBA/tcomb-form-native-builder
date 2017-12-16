@@ -66,7 +66,7 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   return options
 }
 
-function getPropState({children, factories, formats = {}, options, type, types = {}})
+function getPropState({children, factories, formats = {}, onSubmit, options, type, types = {}})
 {
   // Remove all the registered formats and types
   transform.resetFormats()
@@ -75,6 +75,13 @@ function getPropState({children, factories, formats = {}, options, type, types =
   // Register formats and types
   Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
   Object.entries(types).forEach(entry => transform.registerType(...entry))
+
+  // Pass `onSubmit` callback to the `Form` instance
+  if(onSubmit)
+  {
+    options =  options || {}
+    options.onSubmit = onSubmit
+  }
 
   // Get type definition
   type = type || children || {}
