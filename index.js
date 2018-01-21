@@ -127,15 +127,23 @@ class Builder extends Component
     this.setState(getPropState.call(this._root, props))
   }
 
+  _onChange = value =>
+  {
+    this.setState({value})
+
+    const {onChange} = this.props
+    if(onChange) onChange(value)
+  }
+
   render()
   {
-    const {context, i18n, onChange, stylesheet, templates, value} = this.props
+    const {context, i18n, stylesheet, templates, value} = this.props
     const {options, type} = this.state
 
     return <Form
       context={context}
       i18n={i18n || defaultI18n}
-      onChange={onChange}
+      onChange={this._onChange}
       options={options}
       ref={component => this._root = component}
       stylesheet={stylesheet || defaultStylesheet}
