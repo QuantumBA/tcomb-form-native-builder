@@ -35,6 +35,7 @@ exports[`component options 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "componentOption": "blah",
@@ -491,6 +492,7 @@ exports[`custom factories array item 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "item": Object {
@@ -993,6 +995,7 @@ exports[`custom factories array item 2`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "item": Object {
@@ -1487,6 +1490,7 @@ exports[`custom factories explicit factory 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "factory": [Function],
@@ -1982,6 +1986,7 @@ exports[`custom factories object property 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "fields": Object {
@@ -2720,6 +2725,7 @@ exports[`custom factories root element 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "factory": [Function],
@@ -3196,6 +3202,7 @@ exports[`load definition JSON object body 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -3959,6 +3966,7 @@ exports[`load definition JSON object prop 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -4712,6 +4720,7 @@ exports[`load definition JSON string body 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -5466,6 +5475,7 @@ exports[`load definition JSON string prop 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -6219,6 +6229,7 @@ exports[`load definition no definition 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -6685,6 +6696,7 @@ exports[`load definition tcomb object body 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -7439,6 +7451,7 @@ exports[`load definition tcomb object prop 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -8215,6 +8228,7 @@ exports[`predefined options array item 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "item": Object {},
@@ -8721,6 +8735,7 @@ exports[`predefined options object property 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={
       Object {
         "fields": Object {
@@ -9734,6 +9749,7 @@ exports[`update definition 1`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
@@ -10493,6 +10509,7 @@ exports[`update definition 2`] = `
         "up": "↑",
       }
     }
+    onChange={[Function]}
     options={Object {}}
     stylesheet={
       Object {
