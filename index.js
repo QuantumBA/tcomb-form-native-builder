@@ -1,9 +1,11 @@
+import {set}              from 'object-path'
 import PropTypes          from 'prop-types'
 import React, {Component} from 'react'
 import t                  from 'tcomb-form-native/lib'
 import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
+import walkObject         from 'walk-object/walk-object'
 
 const {Form} = t.form
 
@@ -129,10 +131,20 @@ class Builder extends Component
 
   _onChange = value =>
   {
-    this.setState({value})
-
     const {onChange} = this.props
+    const {options} = this.state
+
     if(onChange) onChange(value)
+
+    const disabled = {'$set': !this._root.pureValidate()}
+
+    const patch = {}
+    walkObject(options, function({location, value: {type}})
+    {
+      if(type === 'submit') set(patch, location.concat('disabled'), disabled)
+    })
+
+    this.setState({options: t.update(options, patch), value})
   }
 
   render()

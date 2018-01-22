@@ -21,9 +21,11 @@
   },
   "homepage": "https://github.com/QuantumBA/tcomb-form-native-builder#readme",
   "dependencies": {
+    "object-path": "^0.11.4",
     "prop-types": "^15.6.0",
     "tcomb-form-native": "^0.6.11",
-    "tcomb-json-schema": "^0.3.2"
+    "tcomb-json-schema": "^0.3.2",
+    "walk-object": "^4.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
