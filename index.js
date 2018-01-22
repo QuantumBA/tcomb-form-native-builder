@@ -117,16 +117,16 @@ class Builder extends Component
     value: PropTypes.any
   }
 
-  constructor(props)
+  constructor({value, ...props})
   {
     super(props)
 
-    this.state = getPropState.call(this._root, props)
+    this.state = {...getPropState.call(this._root, props), value}
   }
 
-  componentWillReceiveProps(props)
+  componentWillReceiveProps({value, ...props})
   {
-    this.setState(getPropState.call(this._root, props))
+    this.setState({...getPropState.call(this._root, props), value})
   }
 
   _onChange = value =>
@@ -149,8 +149,8 @@ class Builder extends Component
 
   render()
   {
-    const {context, i18n, stylesheet, templates, value} = this.props
-    const {options, type} = this.state
+    const {context, i18n, stylesheet, templates} = this.props
+    const {options, type, value} = this.state
 
     return <Form
       context={context}
