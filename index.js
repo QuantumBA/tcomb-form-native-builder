@@ -1,4 +1,4 @@
-import {set}              from 'object-path'
+import {get, set}         from 'object-path'
 import PropTypes          from 'prop-types'
 import React, {Component} from 'react'
 import t                  from 'tcomb-form-native/lib'
@@ -136,12 +136,13 @@ class Builder extends Component
 
     if(onChange) onChange(value)
 
-    const disabled = {'$set': !this._root.pureValidate()}
+    const disabled = {'$set': !this._root.pureValidate().isValid()}
 
     const patch = {}
     walkObject(options, function({location, value: {type}})
     {
-      if(type === 'submit') set(patch, location.concat('disabled'), disabled)
+      if(['file', 'submit'].includes(get(value, 'meta.type.meta.name')))
+        set(patch, ['fields', location[location.length-1], 'disabled'], disabled)
     })
 
     this.setState({options: t.update(options, patch), value})
