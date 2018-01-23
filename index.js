@@ -68,7 +68,7 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   return options
 }
 
-function getPropState({children, factories, formats = {}, onSubmit, options, type, types = {}})
+function getPropsState({children, factories, formats = {}, onSubmit, options, type, types = {}})
 {
   // Remove all the registered formats and types
   transform.resetFormats()
@@ -148,7 +148,7 @@ class Builder extends Component
     this.setState({options: t.update(options, patch), value})
   _getState({value, ...props})
   {
-    return {...getPropState.call(this, props), value}
+    return {...getPropsState.call(this, props), value}
   }
 
   }
