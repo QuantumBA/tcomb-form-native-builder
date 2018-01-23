@@ -136,7 +136,7 @@ class Builder extends Component
     const patch = {}
     walkObject(options, function({location, value})
     {
-      if(['file', 'submit'].includes(get(value, 'meta.type.meta.name')))
+      if(get(value, 'meta.type.meta.name') === 'submit')
         set(patch, ['fields', location[location.length - 1], 'disabled'], disabled)
     })
 
