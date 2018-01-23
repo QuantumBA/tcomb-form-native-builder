@@ -117,16 +117,16 @@ class Builder extends Component
     value: PropTypes.any
   }
 
-  constructor({value, ...props})
+  constructor(props)
   {
     super(props)
 
-    this.state = {...getPropState.call(this._root, props), value}
+    this.state = this._getState(props)
   }
 
-  componentWillReceiveProps({value, ...props})
+  componentWillReceiveProps(props)
   {
-    this.setState({...getPropState.call(this._root, props), value})
+    this.setState(this._getState(props))
   }
 
   _onChange = value =>
@@ -146,6 +146,11 @@ class Builder extends Component
     })
 
     this.setState({options: t.update(options, patch), value})
+  _getState({value, ...props})
+  {
+    return {...getPropState.call(this, props), value}
+  }
+
   }
 
   render()
