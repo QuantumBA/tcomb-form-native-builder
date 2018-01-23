@@ -92,7 +92,7 @@ function getPropsState({children, factories, formats = {}, onSubmit, options, ty
   if(typeof type === 'string') type = JSON.parse(type)
 
   // Get fields options from JSON object
-  options = getOptions.call(this, type, options, factories)
+  options = this._updateOptions(getOptions.call(this._root, type, options, factories))
 
   // JSON object to tcomb
   if(!(type instanceof Function)) type = transform(type)
@@ -131,7 +131,8 @@ class Builder extends Component
 
   _updateOptions(options)
   {
-    const disabled = {'$set': !this._root.pureValidate().isValid()}
+    const {_root} = this
+    const disabled = {'$set': !(_root && _root.pureValidate().isValid())}
 
     const patch = {}
     walkObject(options, function({location, value})
