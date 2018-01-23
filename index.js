@@ -129,13 +129,8 @@ class Builder extends Component
     this.setState(this._getState(props))
   }
 
-  _onChange = value =>
+  _updateOptions(options)
   {
-    const {onChange} = this.props
-    const {options} = this.state
-
-    if(onChange) onChange(value)
-
     const disabled = {'$set': !this._root.pureValidate().isValid()}
 
     const patch = {}
@@ -145,12 +140,22 @@ class Builder extends Component
         set(patch, ['fields', location[location.length - 1], 'disabled'], disabled)
     })
 
-    this.setState({options: t.update(options, patch), value})
+    return t.update(options, patch)
+  }
+
   _getState({value, ...props})
   {
     return {...getPropsState.call(this, props), value}
   }
 
+  _onChange = value =>
+  {
+    const {onChange} = this.props
+    const {options}  = this.state
+
+    if(onChange) onChange(value)
+
+    this.setState({options: this._updateOptions(options), value})
   }
 
   render()
