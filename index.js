@@ -139,10 +139,10 @@ class Builder extends Component
     const disabled = {'$set': !this._root.pureValidate().isValid()}
 
     const patch = {}
-    walkObject(options, function({location, value: {type}})
+    walkObject(options, function({location, value})
     {
       if(['file', 'submit'].includes(get(value, 'meta.type.meta.name')))
-        set(patch, ['fields', location[location.length-1], 'disabled'], disabled)
+        set(patch, ['fields', location[location.length - 1], 'disabled'], disabled)
     })
 
     this.setState({options: t.update(options, patch), value})
