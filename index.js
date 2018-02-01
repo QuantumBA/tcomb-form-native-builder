@@ -81,7 +81,8 @@ function getPropsState({children, factories, formats = {}, onSubmit, options, ty
   // Pass `onSubmit` callback to the `Form` instance
   if(onSubmit)
   {
-    options =  options || {}
+    if(!options) options = {}
+
     options.onSubmit = onSubmit
   }
 
