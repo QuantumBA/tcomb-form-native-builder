@@ -138,7 +138,7 @@ class Builder extends Component
     walkObject(options, function({location, value})
     {
       if(get(value, 'meta.type.meta.name') === 'submit')
-        set(patch, ['fields', location[location.length - 1], 'disabled'], disabled)
+        set(patch, location.concat('disabled'), disabled)
     })
 
     return t.update(options, patch)
