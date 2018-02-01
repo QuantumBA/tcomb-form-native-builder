@@ -1,4 +1,5 @@
 import {mount}   from 'enzyme'
+import {set}     from 'object-path'
 import React     from 'react'
 import {Textbox} from 'tcomb-form-native/lib/components'
 import transform from 'tcomb-json-schema'
@@ -186,4 +187,23 @@ test('component options', function()
 
   expect(tcombFormComponent.mock.calls.length).toBe(1)
   expect(tcombFormComponent.mock.calls[0][0]).toMatchObject({options: {componentOption: 'blah'}})
+})
+
+test('onSubmit', function()
+{
+  const onSubmit = jest.fn()
+  set(onSubmit, 'meta.type.meta.name', 'submit')
+
+  const tcombFormComponent = jest.fn(() => null)
+
+  const submit = Builder.t.subtype(Builder.t.Nil, s => s, 'submit')
+  submit.getTcombFormFactory = jest.fn(() => tcombFormComponent)
+
+  const types = {submit}
+  const type = require('./fixture/10.json')
+
+  const wrapper = mount(<Builder onSubmit={onSubmit} templates={templates}
+    type={type} types={types}/>)
+
+  expect(wrapper).toMatchSnapshot()
 })
