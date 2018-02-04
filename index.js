@@ -15,11 +15,30 @@ Form.stylesheet = defaultStylesheet
 
 // const Type = PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 
+const TYPES_ALWAYS_REQUIRED = ['image', 'submit']
+
+
+function cleanPropertiesLabels([name, property])
+{
+  this[name] = cleanLabels(property)
+}
 
 function filterComponentOptions(entry)
 {
   // TODO get type properties dynamically relative to each type
   return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type'].includes(entry[0])
+}
+
+function reduceProperties(required, [name, {type}])
+{
+  if(TYPES_ALWAYS_REQUIRED.includes(type))
+  {
+    if(!required) required = []
+
+    required.push(name)
+  }
+
+  return required
 }
 
 
@@ -68,6 +87,40 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   return options
 }
 
+/** Don't show 'optional' or 'required' suffix on `image` and `submit` components
+ */
+function cleanLabels(type)
+{
+  switch(type.type)
+  {
+    case 'array':
+    {
+      const {items} = type
+
+      if(Array.isArray(items))
+        type.items = items.map(cleanLabels)
+      else
+        type.items = cleanLabels(items)
+    }
+    break
+
+    case 'object':
+    {
+      const {properties} = type
+      const entries = Object.entries(properties)
+
+      entries.forEach(cleanPropertiesLabels, properties)
+
+      const required = entries.reduce(reduceProperties, type.required)
+      if(required)
+        type.required = required
+    }
+    break
+  }
+
+  return type
+}
+
 function getPropsState({children, factories, formats = {}, onSubmit, options, type, types = {}})
 {
   // Remove all the registered formats and types
@@ -96,7 +149,7 @@ function getPropsState({children, factories, formats = {}, onSubmit, options, ty
   options = this._updateOptions(getOptions.call(this._root, type, options, factories))
 
   // JSON object to tcomb
-  if(!(type instanceof Function)) type = transform(type)
+  if(!(type instanceof Function)) type = transform(cleanLabels(type))
 
   return {options, type}
 }
