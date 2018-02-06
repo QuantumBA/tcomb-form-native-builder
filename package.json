@@ -37,14 +37,14 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.1",
-    "eslint": "^4.16.0",
+    "eslint": "^4.17.0",
     "eslint-plugin-react": "^7.6.1",
     "jest": "^22.1.4",
     "jest-react-native": "^18.0.0",
     "jsdom": "^9.12.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-native": "^0.52.2",
+    "react-native": "^0.53.0",
     "react-native-mock-render": "0.0.19"
   },
   "jest": {
