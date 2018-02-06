@@ -247,4 +247,13 @@ describe('clean labels', function()
 
     expect(wrapper).toMatchSnapshot()
   })
+
+  test.skip('tuple', function()
+  {
+    const type = require('./fixture/12.json')
+
+    const wrapper = mount(<Builder templates={templates} type={type}/>)
+
+    expect(wrapper).toMatchSnapshot()
+  })
 })
