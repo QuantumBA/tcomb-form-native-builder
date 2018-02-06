@@ -97,9 +97,11 @@ function cleanLabels(type)
     {
       const {items} = type
 
-      if(Array.isArray(items))
-        type.items = items.map(cleanLabels)
-      else
+      // Tuples support, not implemented in `tcomb-form` yet
+      // https://github.com/gcanti/tcomb-form/issues/410
+      // if(Array.isArray(items))
+      //   type.items = items.map(cleanLabels)
+      // else
         type.items = cleanLabels(items)
     }
     break
