@@ -1,3 +1,4 @@
 {
-  "type": "submit"
+  "type": "submit",
+  "label": "submit in root"
 }

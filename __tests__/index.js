@@ -189,7 +189,7 @@ test('component options', function()
   expect(tcombFormComponent.mock.calls[0][0]).toMatchObject({options: {componentOption: 'blah'}})
 })
 
-test('onSubmit', function()
+test('disable `submit` button if form is not valid', function()
 {
   const onSubmit = jest.fn()
   set(onSubmit, 'meta.type.meta.name', 'submit')
@@ -206,4 +206,45 @@ test('onSubmit', function()
     type={type} types={types}/>)
 
   expect(wrapper).toMatchSnapshot()
+})
+
+describe('clean labels', function()
+{
+  test("don't show 'optional' suffix on root `submit` button", function()
+  {
+    const onSubmit = jest.fn()
+    set(onSubmit, 'meta.type.meta.name', 'submit')
+
+    const tcombFormComponent = jest.fn(() => null)
+
+    const submit = Builder.t.subtype(Builder.t.Nil, s => s, 'submit')
+    submit.getTcombFormFactory = jest.fn(() => tcombFormComponent)
+
+    const types = {submit}
+    const type = require('./fixture/10.json')
+
+    const wrapper = mount(<Builder onSubmit={onSubmit} templates={templates}
+      type={type} types={types}/>)
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  test("don't show 'optional' suffix on nested `submit` button", function()
+  {
+    const onSubmit = jest.fn()
+    set(onSubmit, 'meta.type.meta.name', 'submit')
+
+    const tcombFormComponent = jest.fn(() => null)
+
+    const submit = Builder.t.subtype(Builder.t.Nil, s => s, 'submit')
+    submit.getTcombFormFactory = jest.fn(() => tcombFormComponent)
+
+    const types = {submit}
+    const type = require('./fixture/11.json')
+
+    const wrapper = mount(<Builder onSubmit={onSubmit} templates={templates}
+      type={type} types={types}/>)
+
+    expect(wrapper).toMatchSnapshot()
+  })
 })

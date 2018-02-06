@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "properties": {
+    "submit button": {
+      "type": "submit"
+    }
+  }
+}
