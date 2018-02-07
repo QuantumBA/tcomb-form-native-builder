@@ -2,6 +2,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/QuantumBA/tcomb-form-native-builder/badge.svg?branch=master)](https://coveralls.io/github/QuantumBA/tcomb-form-native-builder?branch=master)
 
 # tcomb-form-native-builder
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/QuantumBA/tcomb-form-native-builder.svg)](https://greenkeeper.io/)
 Forms builder library for React Native
 
 `tcomb-form-native-builder` offer a React Native component that allow to define
