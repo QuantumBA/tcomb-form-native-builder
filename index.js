@@ -45,8 +45,6 @@ function reduceProperties(required, [name, {type}])
 
 function getOptions({factory, items, properties = {}, ...componentOptions}, options = {}, factories = {})
 {
-  Object.defineProperty(options, 'form', {get: () => this})
-
   if(factory)
   {
     if(typeof factory === 'string')
@@ -209,8 +207,20 @@ class Builder extends Component
 
       set(patch, path, disabled)
     })
+    options = t.update(options, patch)
 
-    return t.update(options, patch)
+    if(options)
+    {
+      const descriptor = {configurable: true, value: _root}
+      walkObject(options, function({value})
+      {
+        if(!value || value.constructor.name !== 'Object') return
+
+        Object.defineProperty(value, 'form', descriptor)
+      })
+    }
+
+    return options
   }
 
   _getState({value, ...props})
