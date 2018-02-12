@@ -30,14 +30,10 @@ function filterComponentOptions(entry)
   return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type'].includes(entry[0])
 }
 
-function reduceProperties(required, [name, {type}])
+function reduceProperties(required = [], [name, {type}])
 {
   if(TYPES_ALWAYS_REQUIRED.includes(type))
-  {
-    if(!required) required = []
-
     required.push(name)
-  }
 
   return required
 }
@@ -113,7 +109,7 @@ function cleanLabels(type)
       entries.forEach(cleanPropertiesLabels, properties)
 
       const required = entries.reduce(reduceProperties, type.required)
-      if(required)
+      if(required.length)
         type.required = required
     }
     break
@@ -249,7 +245,7 @@ class Builder extends Component
       onChange={this._onChange}
       options={options}
       ref={component => this._root = component}
-      stylesheet={stylesheet || defaultStylesheet}
+      stylesheet={stylesheet}
       templates={templates}
       type={type}
       value={value}
