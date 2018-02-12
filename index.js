@@ -16,6 +16,7 @@ Form.stylesheet = defaultStylesheet
 // const Type = PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 
 const TYPES_ALWAYS_REQUIRED = ['image', 'submit']
+const REGEX_REPLACE_PATH = /(meta\.type\.)?meta\.props/
 
 
 function cleanPropertiesLabels([name, property])
@@ -62,7 +63,7 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   // array items
   if(items)
   {
-    const result = getOptions.call(this, items, options.item, factories)
+    const result = getOptions(items, options.item, factories)
     if(result)
       options.item = result
   }
@@ -71,7 +72,7 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   let {fields} = options
   for(const name in properties)
   {
-    const result = getOptions.call(this, properties[name], fields && fields[name], factories)
+    const result = getOptions(properties[name], fields && fields[name], factories)
     if(result)
       fields = {...fields, [name]: result}
   }
@@ -147,11 +148,16 @@ function getPropsState({children, factories, formats = {}, onSubmit, options, ty
   // string to JSON object
   if(typeof type === 'string') type = JSON.parse(type)
 
-  // Get fields options from JSON object
-  options = this._updateOptions(getOptions.call(this._root, type, options, factories))
-
   // JSON object to tcomb
-  if(!(type instanceof Function)) type = transform(cleanLabels(type))
+  if(!(type instanceof Function))
+  {
+    options = getOptions(type, options, factories)
+
+    type = transform(cleanLabels(type))
+  }
+
+  // Get fields options from JSON object
+  options = this._updateOptions(options, type)
 
   return {options, type}
 }
@@ -185,16 +191,23 @@ class Builder extends Component
     this.setState(this._getState(props))
   }
 
-  _updateOptions(options)
+  _updateOptions(options, type)
   {
     const {_root} = this
     const disabled = {'$set': !(_root && _root.pureValidate().isValid())}
 
     const patch = {}
-    walkObject(options, function({location, value})
+    walkObject(type, function({location, value})
     {
-      if(get(value, 'meta.type.meta.name') === 'submit')
-        set(patch, location.concat('disabled'), disabled)
+      if(get(value, 'meta.name') !== 'submit') return
+
+      const path = location
+      .join('.')
+      .replace(REGEX_REPLACE_PATH, 'fields')
+      .split('.')
+      .concat('disabled')
+
+      set(patch, path, disabled)
     })
 
     return t.update(options, patch)
@@ -208,11 +221,11 @@ class Builder extends Component
   _onChange = value =>
   {
     const {onChange} = this.props
-    const {options}  = this.state
+    const {options, type}  = this.state
 
     if(onChange) onChange(value)
 
-    this.setState({options: this._updateOptions(options), value})
+    this.setState({options: this._updateOptions(options, type), value})
   }
 
   render()
