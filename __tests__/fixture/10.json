@@ -1,4 +1,5 @@
 {
   "type": "submit",
-  "label": "submit in root"
+  "label": "submit in root",
+  "uri": "http://example.com"
 }
