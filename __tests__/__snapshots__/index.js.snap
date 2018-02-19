@@ -47,9 +47,7 @@ exports[`clean labels don't show 'optional' suffix on nested \`submit\` button 1
     options={
       Object {
         "fields": Object {
-          "submit button": Object {
-            "disabled": true,
-          },
+          "submit button": Object {},
         },
         "onSubmit": [MockFunction],
       }
@@ -275,9 +273,7 @@ exports[`clean labels don't show 'optional' suffix on nested \`submit\` button 1
       options={
         Object {
           "fields": Object {
-            "submit button": Object {
-              "disabled": true,
-            },
+            "submit button": Object {},
           },
           "onSubmit": [MockFunction],
         }
@@ -499,11 +495,7 @@ exports[`clean labels don't show 'optional' suffix on nested \`submit\` button 1
             }
             key="submit button"
             onChange={[Function]}
-            options={
-              Object {
-                "disabled": true,
-              }
-            }
+            options={Object {}}
             type={[Function]}
           />
         </react-native-mock>
@@ -553,6 +545,7 @@ exports[`clean labels don't show 'optional' suffix on root \`submit\` button 1`]
     onChange={[Function]}
     options={
       Object {
+        "disabled": true,
         "label": "submit in root",
         "onSubmit": [MockFunction],
         "uri": "http://example.com",
@@ -778,6 +771,7 @@ exports[`clean labels don't show 'optional' suffix on root \`submit\` button 1`]
       onChange={[Function]}
       options={
         Object {
+          "disabled": true,
           "label": "submit in root",
           "onSubmit": [MockFunction],
           "uri": "http://example.com",
@@ -2933,6 +2927,7 @@ exports[`disable \`submit\` button if form is not valid 1`] = `
     onChange={[Function]}
     options={
       Object {
+        "disabled": true,
         "label": "submit in root",
         "onSubmit": [MockFunction],
         "uri": "http://example.com",
@@ -3158,6 +3153,7 @@ exports[`disable \`submit\` button if form is not valid 1`] = `
       onChange={[Function]}
       options={
         Object {
+          "disabled": true,
           "label": "submit in root",
           "onSubmit": [MockFunction],
           "uri": "http://example.com",
