@@ -5,7 +5,7 @@ import t                  from 'tcomb-form-native/lib'
 import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
-import walkObject         from 'walk-object/walk-object'
+import walkObject         from 'walk-object'
 
 const {Form} = t.form
 
@@ -195,11 +195,13 @@ class Builder extends Component
     {
       if(get(value, 'meta.name') !== 'submit') return
 
-      const path = location
-      .join('.')
-      .replace(REGEX_REPLACE_PATH, 'fields')
-      .split('.')
-      .concat('disabled')
+      if(location.length)
+        location = location
+        .join('.')
+        .replace(REGEX_REPLACE_PATH, 'fields')
+        .split('.')
+
+      const path = location.concat('disabled')
 
       set(patch, path, disabled)
     })
