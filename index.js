@@ -82,6 +82,32 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   return options
 }
 
+function getValue({items, properties = {}, value})
+{
+  // array items
+  if(items)
+  {
+    const result = getValue(items)
+    if(result !== undefined)
+      value = result
+  }
+
+  // object properties
+  for(const [name, property] of Object.entries(properties))
+  {
+    const result = getValue(property)
+    console.log('getValue', name, property, result)
+    if(result !== undefined)
+    {
+      if(value === undefined) value = {}
+
+      value[name] = result
+    }
+  }
+
+  return value
+}
+
 /** Don't show 'optional' or 'required' suffix on `image` and `submit` components
  */
 function cleanLabels(type)
@@ -210,7 +236,15 @@ class Builder extends Component
     // JSON object to tcomb
     if(!(type instanceof Function))
     {
+      const propValue = value
+
       options = getOptions(type, options, factories)
+      value   = getValue  (type)
+
+      walkObject(propValue, function({isLeaf, location, value: propValue})
+      {
+        if(isLeaf) set(value, location, propValue)
+      })
 
       type = transform(cleanLabels(type))
     }
