@@ -118,44 +118,6 @@ function cleanLabels(type)
   return type
 }
 
-function getPropsState({children, factories, formats = {}, onSubmit, options, type, types = {}})
-{
-  // Remove all the registered formats and types
-  transform.resetFormats()
-  transform.resetTypes()
-
-  // Register formats and types
-  Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
-  Object.entries(types).forEach(entry => transform.registerType(...entry))
-
-  // Pass `onSubmit` callback to the `Form` instance
-  if(onSubmit)
-  {
-    if(!options) options = {}
-
-    options.onSubmit = onSubmit
-  }
-
-  // Get type definition
-  type = type || children || {}
-
-  // string to JSON object
-  if(typeof type === 'string') type = JSON.parse(type)
-
-  // JSON object to tcomb
-  if(!(type instanceof Function))
-  {
-    options = getOptions(type, options, factories)
-
-    type = transform(cleanLabels(type))
-  }
-
-  // Get fields options from JSON object
-  options = this._updateOptions(options, type)
-
-  return {options, type}
-}
-
 
 class Builder extends Component
 {
@@ -221,9 +183,42 @@ class Builder extends Component
     return options
   }
 
-  _getState({value, ...props})
+  _getState({children, factories, formats = {}, onSubmit, options, type, types = {}, value})
   {
-    return {...getPropsState.call(this, props), value}
+    // Remove all the registered formats and types
+    transform.resetFormats()
+    transform.resetTypes()
+
+    // Register formats and types
+    Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
+    Object.entries(types).forEach(entry => transform.registerType(...entry))
+
+    // Pass `onSubmit` callback to the `Form` instance
+    if(onSubmit)
+    {
+      if(!options) options = {}
+
+      options.onSubmit = onSubmit
+    }
+
+    // Get type definition
+    type = type || children || {}
+
+    // string to JSON object
+    if(typeof type === 'string') type = JSON.parse(type)
+
+    // JSON object to tcomb
+    if(!(type instanceof Function))
+    {
+      options = getOptions(type, options, factories)
+
+      type = transform(cleanLabels(type))
+    }
+
+    // Get fields options from JSON object
+    options = this._updateOptions(options, type)
+
+    return {options, type, value}
   }
 
   _onChange = value =>
