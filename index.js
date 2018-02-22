@@ -64,9 +64,9 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
 
   // object properties
   let {fields} = options
-  for(const name in properties)
+  for(const [name, property] of Object.entries(properties))
   {
-    const result = getOptions(properties[name], fields && fields[name], factories)
+    const result = getOptions(property, fields && fields[name], factories)
     if(result)
       fields = {...fields, [name]: result}
   }
