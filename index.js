@@ -72,6 +72,10 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   }
   if(fields) options.fields = fields
 
+  if(componentOptions.type === 'submit'){
+    options['meta']=componentOptions.meta
+  }
+
   // Component specific options
   Object.entries(componentOptions).filter(filterComponentOptions)
   .forEach(function([key, value])
