@@ -27,7 +27,7 @@ function cleanPropertiesLabels([name, property])
 function filterComponentOptions(entry)
 {
   // TODO get type properties dynamically relative to each type
-  return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type'].includes(entry[0])
+  return !['displayName', 'enum', 'format', 'integer', 'is', 'pattern'].includes(entry[0])
 }
 
 function reduceProperties(required = [], [name, {type}])
@@ -39,7 +39,7 @@ function reduceProperties(required = [], [name, {type}])
 }
 
 
-function getOptions({factory, items, properties = {}, ...componentOptions}, options = {}, factories = {})
+function getOptions({factory, items, meta, properties = {}, type, ...componentOptions}, options = {}, factories = {})
 {
   if(factory)
   {
@@ -72,9 +72,7 @@ function getOptions({factory, items, properties = {}, ...componentOptions}, opti
   }
   if(fields) options.fields = fields
 
-  if(componentOptions.type === 'submit'){
-    options['meta']=componentOptions.meta
-  }
+  if(type === 'submit') options.meta = meta
 
   // Component specific options
   Object.entries(componentOptions).filter(filterComponentOptions)
