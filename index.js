@@ -100,13 +100,9 @@ function getValue({items, properties = {}, value})
   for(const [name, property] of Object.entries(properties))
   {
     const result = getValue(property)
+    if(value === undefined) value = {}
 
-    if(result !== undefined)
-    {
-      if(value === undefined) value = {}
-
-      value[name] = result
-    }
+    value[name] = result
   }
 
   return value

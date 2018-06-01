@@ -1,5 +1,5 @@
 {
-  "name": "tcomb-form-native-builder",
+  "name": "@foqum/tcomb-form-native-builder",
   "version": "0.2.4",
   "description": "Forms builder library for React Native",
   "scripts": {
@@ -11,9 +11,10 @@
     "type": "git",
     "url": "git+https://github.com/QuantumBA/tcomb-form-native-builder.git"
   },
-  "author": "Quantum BA (http://www.quantum-ba.com/)",
+  "author": "Foqum (http://foqum.io/)",
   "contributors": [
-    "Jesús Leganés-Combarro 'piranna' <piranna@gmail.com>"
+    "Jesús Leganés-Combarro 'piranna' <piranna@gmail.com>",
+    "Adrián Insausti Crespo <ainsausti@foqum.io>"
   ],
   "license": "MIT",
   "bugs": {
