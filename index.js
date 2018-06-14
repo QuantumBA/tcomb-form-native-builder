@@ -168,6 +168,11 @@ class Builder extends Component
     this.state = this._getState(props)
   }
 
+  componentDidMount() 
+  {
+    this.setState(this._getState(this.props))
+  }
+
   componentWillReceiveProps(props)
   {
     this.setState(this._getState(props))
