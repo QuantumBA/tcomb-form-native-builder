@@ -93,7 +93,7 @@ function getValue({items, properties = {}, value})
   {
     const result = getValue(items)
     if(result !== undefined)
-      value = result
+      value = [result]
   }
 
   // object properties
