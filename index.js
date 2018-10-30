@@ -53,6 +53,7 @@ class Builder extends Component
     this.setState(this._getState(props))
   }
 
+  // currently it enables/disables submit button depending on required fields
   _updateOptions(options, type)
   {
     const {_root} = this
@@ -119,13 +120,15 @@ class Builder extends Component
       const propValue = value
 
       options = getOptions(type, options, factories)
-      value   = getValue(type)
 
+      // update current values with prop values (controlled component)
+      value   = getValue(type)
       walkObject(propValue, function({isLeaf, location, value: propValue}) // eslint-disable-line
       {
         if(isLeaf) set(value, location, propValue)
       })
 
+      // add fields if required
       type = transform(cleanLabels(type))
     }
 

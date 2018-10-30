@@ -16,18 +16,19 @@ const TYPES_ALWAYS_REQUIRED = ['image', 'submit']
 export function filterComponentOptions(entry)
 {
   // TODO get type properties dynamically relative to each type
-  return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type'].includes(entry[0])
+  return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type', 'remote'].includes(entry[0])
 }
 
 function reduceProperties(required = [], [name, {type}])
 {
-  if(TYPES_ALWAYS_REQUIRED.includes(type))
+  if(TYPES_ALWAYS_REQUIRED.includes(type) && required.indexOf(name) < 0)
     required.push(name)
 
   return required
 }
 
-
+// get all valid options where options are all modifiers of a component including tcomb and tcomb-native-builder-component valid options
+// besides it sets up the required options for tcomb to render components
 export function getOptions({factory, items, properties = {}, ...componentOptions}, options = {}, factories = {})
 {
   if(factory)
@@ -64,6 +65,7 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
   if(componentOptions.type === 'submit')
   {
     options.meta = componentOptions.meta
+    options.remote = componentOptions.remote
   }
 
   // Component specific options
