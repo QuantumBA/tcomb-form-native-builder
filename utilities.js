@@ -15,8 +15,19 @@ const TYPES_ALWAYS_REQUIRED = ['image', 'submit']
 
 export function filterComponentOptions(entry)
 {
-  // TODO get type properties dynamically relative to each type
-  return !['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type', 'remote'].includes(entry[0])
+  let filterList = []
+
+  // if field has dependencies do not remove meta information
+  if (entry[1].dependencies)
+  {
+    filterList = ['displayName', 'enum', 'format', 'integer', 'is', 'pattern', 'type', 'remote']
+  }
+  else
+  {
+    filterList = ['displayName', 'enum', 'format', 'integer', 'is', 'meta', 'pattern', 'type', 'remote']
+  }
+
+  return !filterList.includes(entry[0])
 }
 
 function reduceProperties(required = [], [name, {type}])
@@ -44,7 +55,7 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
     options.factory = factory
   }
 
-  // array items
+  // if field is an array and has elements it process element options recursevily
   if(items)
   {
     const result = getOptions(items, options.item, factories)
@@ -52,7 +63,7 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
       options.item = result
   }
 
-  // object properties
+  // if field is a object and has subfields it process children options recursevily
   let {fields} = options
   for(const [name, property] of Object.entries(properties))
   {
@@ -62,10 +73,15 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
   }
   if(fields) options.fields = fields
 
+  // pass meta if the field is submit or if field has any dependency
   if(componentOptions.type === 'submit')
   {
     options.meta = componentOptions.meta
     options.remote = componentOptions.remote
+  }
+  else if(componentOptions.meta && componentOptions.meta.dependencies)
+  {
+    options.meta = componentOptions.meta
   }
 
   // Component specific options

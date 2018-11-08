@@ -54,6 +54,7 @@ class Builder extends Component
   }
 
   // currently it enables/disables submit button depending on required fields
+  // in this function we update dynamically values in the form depending onChanges
   _updateOptions(options, type)
   {
     const {_root} = this
@@ -62,17 +63,19 @@ class Builder extends Component
     const patch = {}
     walkObject(type, function({location, value})
     {
-      if(get(value, 'meta.name') !== 'submit') return
+      if(get(value, 'meta.name') === 'submit')
+      {
 
-      if(location.length)
-        location = location
-        .join('.')
-        .replace(REGEX_REPLACE_PATH, 'fields')
-        .split('.')
+        if(location.length)
+          location = location
+          .join('.')
+          .replace(REGEX_REPLACE_PATH, 'fields')
+          .split('.')
 
-      const path = location.concat('disabled')
+        const path = location.concat('disabled')
 
-      set(patch, path, disabled)
+        set(patch, path, disabled)
+      }
     })
     options = t.update(options, patch)
 
