@@ -141,11 +141,32 @@ class Builder extends Component
     return {options, type, value}
   }
 
+  getAllFieldsDependency () {
+    const { options: { fields } } = this.state
+    Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
+    
+  }
+
+  componentDidMount() {
+    this.setState({
+      dependencies: this.getAllFieldsDependency()
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { options: { fields: prevfields },  value: prevValue } = prevState
+    const { options: { fields },  value } = this.state
+
+    if (prevValue !== value){
+      console.log(prevValue)
+      console.log(value)
+    }
+  }
+
   _onChange = value =>
   {
     const {onChange} = this.props
     const {options, type}  = this.state
-
     if(onChange) onChange(value)
 
     this.setState({options: this._updateOptions(options, type), value})
