@@ -43,9 +43,27 @@ class Builder extends Component
     this.state = this._getState(props)
   }
 
+  extractDependencies() {
+    const { type } = this.props
+    const dependencies = {}
+    Object.entries(type.properties).forEach(([property, fields]) => {
+      if (fields.meta && fields.meta.dependencies) {
+        fields.meta.dependencies.forEach((dep) => {
+          if (!dependencies[dep]) {
+            dependencies[dep] = []
+          }
+          dependencies[dep].push(property)
+        })
+      }
+    });
+    return dependencies
+  }
+
   componentDidMount()
   {
-    this.setState(this._getState(this.props))
+    const state = this._getState(this.props)
+    state.dependencies = this.extractDependencies()
+    this.setState(state)
   }
 
   UNSAFE_componentWillReceiveProps(props) // eslint-disable-line
@@ -151,11 +169,24 @@ class Builder extends Component
     this.setState({options: this._updateOptions(options, type), value})
   }
 
+  componentDidUpdate(_, prevState) {
+    const { dependencies, value } = this.state
+    if (prevState.value !== value) {
+      Object.entries(dependencies).forEach(([dep, depFields]) => {
+        if (prevState.value[dep] !== value[dep]) {
+          depFields.forEach((dependentField) => {
+            value[dependentField] = value[dep]
+          })
+          this._onChange(value)
+        }
+      })
+    }
+  }
+
   render()
   {
     const {context, i18n, stylesheet, templates} = this.props
     const {options, type, value} = this.state
-
     return <Form
       context={context}
       i18n={i18n || defaultI18n}
