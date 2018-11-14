@@ -170,12 +170,15 @@ class Builder extends Component
   }
 
   componentDidUpdate(_, prevState) {
+    const { properties } = this.props.type
     const { dependencies, value } = this.state
     if (prevState.value !== value) {
       Object.entries(dependencies).forEach(([dep, depFields]) => {
         if (prevState.value[dep] !== value[dep]) {
           depFields.forEach((dependentField) => {
-            value[dependentField] = value[dep]
+            const replaceString = '${'+dep+'}'
+            const query = properties[dependentField].meta.body.replace(replaceString, `"${value[dep]}"`)
+            value[dependentField] = query
           })
           this._onChange(value)
         }
@@ -207,3 +210,4 @@ Builder.t = t
 
 
 export default Builder
+
