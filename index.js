@@ -6,6 +6,7 @@ import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
 import walkObject         from 'walk-object'
+import { createApolloFetch } from 'apollo-fetch'
 import {
         getOptions,
         getValue,
@@ -19,6 +20,14 @@ Form.stylesheet = defaultStylesheet
 
 const REGEX_REPLACE_PATH = /(meta\.type\.)?meta\.props/
 
+async function processRemoteRequests(uri, headers, body = undefined) {
+  let response = {}
+  const apolloFetch = createApolloFetch({
+    uri: uri,
+  })
+  response = await apolloFetch({ query: body })
+  return response
+}
 
 class Builder extends Component
 {
@@ -90,7 +99,7 @@ class Builder extends Component
           .replace(REGEX_REPLACE_PATH, 'fields')
           .split('.')
 
-        const path = location.concat('disabled')
+        const path = location.concat('enabled')
 
         set(patch, path, disabled)
       }
@@ -176,11 +185,16 @@ class Builder extends Component
       Object.entries(dependencies).forEach(([dep, depFields]) => {
         if (prevState.value[dep] !== value[dep]) {
           depFields.forEach((dependentField) => {
+            value[dependentField] = ''
             const replaceString = '${'+dep+'}'
             const query = properties[dependentField].meta.body.replace(replaceString, `"${value[dep]}"`)
-            value[dependentField] = query
+            processRemoteRequests(properties[dependentField].uri, {}, query).then((result) => {
+              const path = properties[dependentField].meta.path
+              const key = properties[dependentField].meta.fieldLabel
+              value[dependentField] = get(result,path)[key]
+              this._onChange(value)
+            })
           })
-          this._onChange(value)
         }
       })
     }
