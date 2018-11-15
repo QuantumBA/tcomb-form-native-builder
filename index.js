@@ -79,7 +79,6 @@ class Builder extends Component
   {
     const {_root} = this
     const disabled = {'$set': !(_root && _root.pureValidate().isValid())}
-
     const patch = {}
     walkObject(type, function({location, value})
     {
@@ -175,16 +174,18 @@ class Builder extends Component
     const { properties } = this.props.type
     const { dependencies, value } = this.state
     if (prevState.value !== value) {
-      Object.entries(dependencies).forEach(([dep, depFields]) => {
-        if (prevState.value[dep] !== value[dep]) {
-          depFields.forEach((dependentField) => {
+      Object.entries(dependencies).forEach(([dependency, dependantFields]) => {
+        if (prevState.value[dependency] !== value[dependency]) {
+          dependantFields.forEach((dependentField) => {
             value[dependentField] = ''
-            const replaceString = '${'+dep+'}'
-            const query = properties[dependentField].meta.body.replace(replaceString, `"${value[dep]}"`)
+            const replaceString = '${'+dependency+'}'
+            let query = properties[dependentField].meta.body
+            query = query.replace(replaceString, `"${value[dependency]}"`)
             processRemoteRequests(properties[dependentField].uri, {}, {}, query).then((response) => {
               const path = properties[dependentField].meta.path
               const key = properties[dependentField].meta.fieldLabel
-              value[dependentField] = get(response,path)[key]
+              const fieldValue = get(response,path) ? get(response,path)[key]: ''
+              value[dependentField] = String(fieldValue)
               this._onChange(value)
             })
           })
