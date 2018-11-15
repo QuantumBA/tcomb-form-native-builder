@@ -6,6 +6,8 @@ import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
 import walkObject         from 'walk-object'
+import { processRemoteRequests } from 'tcomb-form-native-builder-utils'
+
 import {
         getOptions,
         getValue,
@@ -176,11 +178,16 @@ class Builder extends Component
       Object.entries(dependencies).forEach(([dep, depFields]) => {
         if (prevState.value[dep] !== value[dep]) {
           depFields.forEach((dependentField) => {
+            value[dependentField] = ''
             const replaceString = '${'+dep+'}'
             const query = properties[dependentField].meta.body.replace(replaceString, `"${value[dep]}"`)
-            value[dependentField] = query
+            processRemoteRequests(properties[dependentField].uri, {}, {}, query).then((response) => {
+              const path = properties[dependentField].meta.path
+              const key = properties[dependentField].meta.fieldLabel
+              value[dependentField] = get(response,path)[key]
+              this._onChange(value)
+            })
           })
-          this._onChange(value)
         }
       })
     }
