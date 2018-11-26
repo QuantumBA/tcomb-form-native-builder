@@ -58,9 +58,14 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
   // if field is an array and has elements it process element options recursevily
   if(items)
   {
+    const editable = !(componentOptions.editable === false)
     const result = getOptions(items, options.item, factories)
-    if(result)
+    Object.entries(items.properties).forEach((property) => {
+      property[1].editable = editable
+    })
+    if(result) {
       options.item = result
+    }
   }
 
   // if field is a object and has subfields it process children options recursevily
