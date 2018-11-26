@@ -99,9 +99,7 @@ export function getValue({items, properties = {}, value})
   // array items
   if(items)
   {
-    const result = getValue(items)
-    if(result !== undefined) // eslint-disable-line
-      value = [result]
+    return value
   }
 
   // object properties
