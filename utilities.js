@@ -64,6 +64,7 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
       property[1].editable = editable
     })
     if(result) {
+      result.editable = editable
       options.item = result
     }
   }
