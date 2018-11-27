@@ -185,7 +185,11 @@ class Builder extends Component
               const path = properties[dependentField].meta.path
               const key = properties[dependentField].meta.fieldLabel
               const fieldValue = get(response,path) ? get(response,path)[key]: ''
-              value[dependentField] = String(fieldValue)
+              if (fieldValue === true || fieldValue === false) {
+                value[dependentField] = fieldValue
+              } else {
+                value[dependentField] = String(fieldValue)
+              }
               this._onChange(value)
             })
           })
@@ -218,4 +222,3 @@ Builder.t = t
 
 
 export default Builder
-
