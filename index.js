@@ -185,7 +185,10 @@ class Builder extends Component
               const path = properties[dependentField].meta.path
               const key = properties[dependentField].meta.fieldLabel
               const fieldValue = get(response,path) ? get(response,path)[key]: ''
-              if (fieldValue === true || fieldValue === false) {
+              const date = new Date(Date.parse(fieldValue))
+              if (!isNaN(date) && date.toISOString() === String(fieldValue)){
+                value[dependentField] = date.toLocaleDateString()
+              } else if (typeof fieldValue === "boolean") {
                 value[dependentField] = fieldValue
               } else {
                 value[dependentField] = String(fieldValue)
