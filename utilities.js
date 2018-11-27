@@ -103,8 +103,17 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
 export function getValue({items, properties = {}, value})
 {
   // array items
-  if(items)
+  if(items && value)
   {
+    value.forEach(item => {
+      console.log(Object.entries(item));
+      Object.entries(item).forEach(([k, v]) => {
+        const date = new Date(Date.parse(v))
+        if (!isNaN(date) && date.toISOString() === String(v)){
+          item[k] = date.toLocaleDateString()
+        }
+      })
+    })
     return value
   }
 
