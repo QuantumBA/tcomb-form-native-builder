@@ -18,7 +18,7 @@ export function filterComponentOptions(entry)
   let filterList = []
 
   // if field has dependencies do not remove meta information
-  if (entry[1].dependencies)
+  if (entry[1] && entry[1].dependencies)
   {
     filterList = ['displayName', 'enum', 'format', 'integer', 'is', 'pattern', 'type', 'remote']
   }
