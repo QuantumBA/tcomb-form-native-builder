@@ -6,7 +6,7 @@ import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
 import walkObject         from 'walk-object'
-import { processRemoteRequests } from 'tcomb-form-native-builder-utils'
+import {processRemoteRequests} from 'tcomb-form-native-builder-utils'
 
 import {
         getOptions,
@@ -34,7 +34,7 @@ class Builder extends Component
     options: PropTypes.object,
     stylesheet: PropTypes.object,
     templates: PropTypes.object.isRequired,
-    // type: Type,
+    type: PropTypes.object,
     value: PropTypes.any
   }
 
@@ -45,19 +45,25 @@ class Builder extends Component
     this.state = this._getState(props)
   }
 
-  extractDependencies() {
-    const { type } = this.props
+  extractDependencies()
+  {
+    const {type} = this.props
     const dependencies = {}
-    Object.entries(type.properties).forEach(([property, fields]) => {
-      if (fields.meta && fields.meta.dependencies) {
-        fields.meta.dependencies.forEach((dep) => {
-          if (!dependencies[dep]) {
+    Object.entries(type.properties).forEach(([property, fields]) =>
+    {
+      if (fields.meta && fields.meta.dependencies)
+      {
+        fields.meta.dependencies.forEach(dep =>
+        {
+          if (!dependencies[dep])
+          {
             dependencies[dep] = []
           }
           dependencies[dep].push(property)
         })
       }
     });
+
     return dependencies
   }
 
@@ -160,28 +166,6 @@ class Builder extends Component
     return {options, type, value}
   }
 
-  getAllFieldsDependency () {
-    const { options: { fields } } = this.state
-    Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
-    
-  }
-
-  componentDidMount() {
-    this.setState({
-      dependencies: this.getAllFieldsDependency()
-    })
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { options: { fields: prevfields },  value: prevValue } = prevState
-    const { options: { fields },  value } = this.state
-
-    if (prevValue !== value){
-      console.log(prevValue)
-      console.log(value)
-    }
-  }
-
   _onChange = value =>
   {
     const {onChange} = this.props
@@ -191,27 +175,38 @@ class Builder extends Component
     this.setState({options: this._updateOptions(options, type), value})
   }
 
-  componentDidUpdate(_, prevState) {
-    const { properties } = this.props.type
-    const { dependencies, value } = this.state
-    if (prevState.value !== value) {
-      Object.entries(dependencies).forEach(([dependency, dependantFields]) => {
-        if (prevState.value[dependency] !== value[dependency]) {
-          dependantFields.forEach((dependentField) => {
+  componentDidUpdate(_, prevState)
+  {
+    const {type: {properties}} = this.props
+    const {dependencies, value} = this.state
+    if (prevState.value !== value)
+    {
+      Object.entries(dependencies).forEach(([dependency, dependantFields]) =>
+      {
+        if (prevState.value[dependency] !== value[dependency])
+        {
+          dependantFields.forEach(dependentField =>
+          {
             value[dependentField] = ''
-            const replaceString = '${'+dependency+'}'
+            const replaceString = '${' + dependency + '}'  // eslint-disable-line
             let query = properties[dependentField].meta.body
             query = query.replace(replaceString, `"${value[dependency]}"`)
-            processRemoteRequests(properties[dependentField].uri, {}, {}, query).then((response) => {
-              const path = properties[dependentField].meta.path
+            processRemoteRequests(properties[dependentField].uri, {}, {}, query).then(response =>
+            {
+              const {path} = properties[dependentField].meta
               const key = properties[dependentField].meta.fieldLabel
-              const fieldValue = get(response,path) ? get(response,path)[key]: ''
+              const fieldValue = get(response, path) ? get(response, path)[key] : ''  // eslint-disable-line
               const date = new Date(Date.parse(fieldValue))
-              if (!isNaN(date) && date.toISOString() === String(fieldValue)){
+              if (!isNaN(date) && date.toISOString() === String(fieldValue))
+              {
                 value[dependentField] = date.toLocaleDateString()
-              } else if (typeof fieldValue === "boolean") {
+              }
+              else if (typeof fieldValue === 'boolean')
+              {
                 value[dependentField] = fieldValue
-              } else {
+              }
+              else
+              {
                 value[dependentField] = String(fieldValue)
               }
               this._onChange(value)
@@ -226,6 +221,7 @@ class Builder extends Component
   {
     const {context, i18n, stylesheet, templates} = this.props
     const {options, type, value} = this.state
+
     return <Form
       context={context}
       i18n={i18n || defaultI18n}
