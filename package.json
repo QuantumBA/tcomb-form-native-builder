@@ -26,7 +26,8 @@
     "prop-types": "^15.6.0",
     "tcomb-form-native": "^0.6.11",
     "tcomb-json-schema": "^0.3.2",
-    "walk-object": "QuantumBA/walk-object"
+    "walk-object": "QuantumBA/walk-object",
+    "tcomb-form-native-builder-utils": "github:QuantumBA/tcomb-form-native-builder-utils"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

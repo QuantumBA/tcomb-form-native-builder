@@ -18,7 +18,7 @@ export function filterComponentOptions(entry)
   let filterList = []
 
   // if field has dependencies do not remove meta information
-  if (entry[1].dependencies)
+  if (entry[1] && entry[1].dependencies)
   {
     filterList = ['displayName', 'enum', 'format', 'integer', 'is', 'pattern', 'type', 'remote']
   }
@@ -58,9 +58,15 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
   // if field is an array and has elements it process element options recursevily
   if(items)
   {
+    const editable = !(componentOptions.editable === false)
     const result = getOptions(items, options.item, factories)
-    if(result)
+    Object.entries(items.properties).forEach((property) => {
+      property[1].editable = editable
+    })
+    if(result) {
+      result.editable = editable
       options.item = result
+    }
   }
 
   // if field is a object and has subfields it process children options recursevily
@@ -97,11 +103,18 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
 export function getValue({items, properties = {}, value})
 {
   // array items
-  if(items)
+  if(items && value)
   {
-    const result = getValue(items)
-    if(result !== undefined) // eslint-disable-line
-      value = [result]
+    value.forEach(item => {
+      console.log(Object.entries(item));
+      Object.entries(item).forEach(([k, v]) => {
+        const date = new Date(Date.parse(v))
+        if (!isNaN(date) && date.toISOString() === String(v)){
+          item[k] = date.toLocaleDateString()
+        }
+      })
+    })
+    return value
   }
 
   // object properties
