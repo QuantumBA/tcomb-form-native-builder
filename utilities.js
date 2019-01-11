@@ -60,10 +60,12 @@ export function getOptions({factory, items, properties = {}, ...componentOptions
   {
     const editable = !(componentOptions.editable === false)
     const result = getOptions(items, options.item, factories)
-    Object.entries(items.properties).forEach((property) => {
+    Object.entries(items.properties).forEach(property =>
+    {
       property[1].editable = editable
     })
-    if(result) {
+    if(result)
+    {
       result.editable = editable
       options.item = result
     }
@@ -105,15 +107,18 @@ export function getValue({items, properties = {}, value})
   // array items
   if(items && value)
   {
-    value.forEach(item => {
-      console.log(Object.entries(item));
-      Object.entries(item).forEach(([k, v]) => {
+    value.forEach(item =>
+    {
+      Object.entries(item).forEach(([k, v]) =>
+      {
         const date = new Date(Date.parse(v))
-        if (!isNaN(date) && date.toISOString() === String(v)){
+        if (!isNaN(date) && date.toISOString() === String(v))
+        {
           item[k] = date.toLocaleDateString()
         }
       })
     })
+
     return value
   }
 
