@@ -150,6 +150,14 @@ export function cleanLabels(type)
     case 'object':
     {
       const {properties} = type
+      if (!type.required) type.required = []
+
+      Object.keys(properties).forEach((prop) => {
+        if (properties[prop].editable === false && type.required.indexOf(prop) < 0) {
+          type.required.push(prop)
+        }
+      })
+
       const entries = Object.entries(properties)
 
       entries.forEach(cleanPropertiesLabels, properties)
