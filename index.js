@@ -221,6 +221,7 @@ class Builder extends Component
   {
     const {context, i18n, stylesheet, templates} = this.props
     const {options, type, value} = this.state
+    options.config = Object.assign({ fields: options.fields }, options.config)
 
     return <Form
       context={context}
@@ -242,3 +243,4 @@ Builder.t = t
 
 
 export default Builder
+
