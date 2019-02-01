@@ -1,0 +1,44 @@
+{
+    "extends": [
+        "airbnb"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "browser": true
+    },
+    "rules": {
+        "operator-linebreak": 0,
+        "camelcase": 0,
+        "react/prop-types": 0,
+        "react/no-unused-state": 0,
+        "react/jsx-filename-extension": 0,
+        // TODO: Consider using stateless functional components where relevant
+        // https://hackernoon.com/react-stateless-functional-components-nine-wins-you-might-have-overlooked-997b0d933dbc
+        // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
+        "react/prefer-stateless-function": 0,
+        "react/no-multi-comp": 0,
+        "import/no-dynamic-require": 0,
+        "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+        "semi": ["error", "never"],
+        "no-multi-spaces": ["error", { "exceptions": { "ImportDeclaration": true } }],
+        "padded-blocks": ["error", { "classes": "always" }],
+        "no-underscore-dangle": 0,
+        "no-param-reassign": 0,
+        "no-shadow": 0,
+        "max-len": 0,
+        "global-require": 0,
+        "no-unneeded-ternary": 0,
+        "quote-props": 0,
+        "no-console": [1, { allow: ["warn", "error"] }],
+        "no-use-before-define": ["error", { "functions": false }],
+        "object-curly-newline": ["error", { "consistent": true }],
+        "no-nested-ternary": 0,
+    }
+}
