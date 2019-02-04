@@ -87,7 +87,7 @@ class Builder extends Component {
     const { options, type } = this.state
     if (onChange) onChange(value)
 
-    this.setState({ options: this._updateOptions(options, type), value })
+    this.setState({ options: this._updateOptions(options, type, true), value })
   }
 
   _getState({ children, factories, formats = {}, onSubmit, options, type, types = {}, value }) {
@@ -155,8 +155,11 @@ class Builder extends Component {
 
   // currently it enables/disables submit button depending on required fields
   // in this function we update dynamically values in the form depending onChanges
-  _updateOptions(options, type) {
+  _updateOptions(options, type, validate = false) {
     const { _root } = this
+    // show field errors
+    if (_root && validate) _root.validate()
+
     const disabled = { '$set': !(_root && _root.pureValidate().isValid()) }
     const patch = {}
     walkObject(type, ({ location, value }) => {
