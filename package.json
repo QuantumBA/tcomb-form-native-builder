@@ -1,6 +1,6 @@
 {
   "name": "tcomb-form-native-builder",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "Forms builder library for React Native",
   "scripts": {
     "lint": "eslint .",
