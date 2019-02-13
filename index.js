@@ -90,7 +90,7 @@ class Builder extends Component {
     this.setState({ options: this._updateOptions(options, type, true), value })
   }
 
-  _getState({ children, factories, formats = {}, onSubmit, options, type, types = {}, value }) {
+  _getState({ children, factories, formats = {}, onSubmit, requestUploadUrl, options, type, types = {}, value }) {
     // Remove all the registered formats and types
     transform.resetFormats()
     transform.resetTypes()
@@ -104,6 +104,12 @@ class Builder extends Component {
       if (!options) options = {}
 
       options.onSubmit = onSubmit
+    }
+
+    if (requestUploadUrl) {
+      if (!options) options = {}
+
+      options.requestUploadUrl = requestUploadUrl
     }
 
     // Get type definition
@@ -215,3 +221,4 @@ class Builder extends Component {
 Builder.t = t
 
 export default Builder
+
