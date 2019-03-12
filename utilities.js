@@ -54,7 +54,7 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
     const editable = !(componentOptions.editable === false)
     const result = getOptions(items, options.item, factories)
     Object.entries(items.properties).forEach((property) => {
-      property[1].editable = editable
+      property[1].editable = property[1].editable == null ? editable : property[1].editable
     })
     if (result) {
       result.editable = editable
@@ -150,3 +150,4 @@ export function cleanLabels(type) {
 function cleanPropertiesLabels([name, property]) {
   this[name] = cleanLabels(property)
 }
+
