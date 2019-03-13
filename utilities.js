@@ -150,4 +150,3 @@ export function cleanLabels(type) {
 function cleanPropertiesLabels([name, property]) {
   this[name] = cleanLabels(property)
 }
-

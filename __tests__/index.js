@@ -1,7 +1,7 @@
-import {mount}   from 'enzyme'
-import {set}     from 'object-path'
+import { mount } from 'enzyme'
+import { set } from 'object-path'
 import React     from 'react'
-import {Textbox} from 'tcomb-form-native/lib/components'
+import { Textbox } from 'tcomb-form-native/lib/components'
 import transform from 'tcomb-json-schema'
 import templates from 'tcomb-form-native/lib/templates/bootstrap'
 
@@ -11,64 +11,53 @@ import Builder from '..'
 const fixture = require('./fixture/1.json')
 
 
-describe('load definition', function()
-{
-  test('no definition', function()
-  {
-    const wrapper = mount(<Builder templates={templates}/>)
+describe('load definition', () => {
+  test('no definition', () => {
+    const wrapper = mount(<Builder templates={templates} />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
-  describe('JSON string', function()
-  {
+  describe('JSON string', () => {
     const json = JSON.stringify(fixture)
 
-    test('prop', function()
-    {
-      const wrapper = mount(<Builder templates={templates} type={json}/>)
+    test('prop', () => {
+      const wrapper = mount(<Builder templates={templates} type={json} />)
 
       expect(wrapper).toMatchSnapshot()
     })
 
-    test('body', function()
-    {
+    test('body', () => {
       const wrapper = mount(<Builder templates={templates}>{json}</Builder>)
 
       expect(wrapper).toMatchSnapshot()
     })
   })
 
-  describe('JSON object', function()
-  {
-    test('prop', function()
-    {
-      const wrapper = mount(<Builder templates={templates} type={fixture}/>)
+  describe('JSON object', () => {
+    test('prop', () => {
+      const wrapper = mount(<Builder templates={templates} type={fixture} />)
 
       expect(wrapper).toMatchSnapshot()
     })
 
-    test('body', function()
-    {
+    test('body', () => {
       const wrapper = mount(<Builder templates={templates}>{fixture}</Builder>)
 
       expect(wrapper).toMatchSnapshot()
     })
   })
 
-  describe('tcomb object', function()
-  {
+  describe('tcomb object', () => {
     const tcomb = transform(fixture)
 
-    test('prop', function()
-    {
-      const wrapper = mount(<Builder templates={templates} type={tcomb}/>)
+    test('prop', () => {
+      const wrapper = mount(<Builder templates={templates} type={tcomb} />)
 
       expect(wrapper).toMatchSnapshot()
     })
 
-    test('body', function()
-    {
+    test('body', () => {
       const wrapper = mount(<Builder templates={templates}>{tcomb}</Builder>)
 
       expect(wrapper).toMatchSnapshot()
@@ -76,41 +65,45 @@ describe('load definition', function()
   })
 })
 
-test('update definition', function()
-{
-  const wrapper = mount(<Builder templates={templates} type={fixture}/>)
+test('update definition', () => {
+  const wrapper = mount(<Builder templates={templates} type={fixture} />)
 
   expect(wrapper).toMatchSnapshot()
 
-  wrapper.setProps({type: require('./fixture/2.json')})
+  wrapper.setProps({ type: require('./fixture/2.json') })
 
   expect(wrapper).toMatchSnapshot()
 })
 
-describe('custom factories', function()
-{
-  const factories = {customFactory: Textbox}
+describe('custom factories', () => {
+  const factories = { customFactory: Textbox }
 
-  test('root element', function()
-  {
-    const wrapper = mount(<Builder templates={templates}
-      type={require('./fixture/3.json')} factories={factories}/>)
-
-    expect(wrapper).toMatchSnapshot()
-  })
-
-  test('object property', function()
-  {
-    const wrapper = mount(<Builder templates={templates}
-      type={require('./fixture/4.json')} factories={factories}/>)
+  test('root element', () => {
+    const wrapper = mount(<Builder
+      templates={templates}
+      type={require('./fixture/3.json')}
+      factories={factories}
+    />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
-  test('array item', function()
-  {
-    const wrapper = mount(<Builder templates={templates}
-      type={require('./fixture/5.json')} factories={factories}/>)
+  test('object property', () => {
+    const wrapper = mount(<Builder
+      templates={templates}
+      type={require('./fixture/4.json')}
+      factories={factories}
+    />)
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  test('array item', () => {
+    const wrapper = mount(<Builder
+      templates={templates}
+      type={require('./fixture/5.json')}
+      factories={factories}
+    />)
 
     expect(wrapper).toMatchSnapshot()
 
@@ -120,77 +113,80 @@ describe('custom factories', function()
     expect(wrapper).toMatchSnapshot()
   })
 
-  test('unknown factory', function()
-  {
+  test('unknown factory', () => {
     const type = require('./fixture/6.json')
 
-    function wrapper()
-    {
-      mount(<Builder type={type} templates={templates} factories={factories}/>)
+    function wrapper() {
+      mount(<Builder type={type} templates={templates} factories={factories} />)
     }
 
     expect(wrapper).toThrowErrorMatchingSnapshot()
   })
 
-  test('explicit factory', function()
-  {
+  test('explicit factory', () => {
     const type = require('./fixture/1.json')
     type.factory = Textbox
 
-    const wrapper = mount(<Builder templates={templates} type={type}/>)
+    const wrapper = mount(<Builder templates={templates} type={type} />)
 
     expect(wrapper).toMatchSnapshot()
   })
 })
 
-describe('predefined options', function()
-{
-  const factories = {customFactory: Textbox}
+describe('predefined options', () => {
+  const factories = { customFactory: Textbox }
 
-  test('object property', function()
-  {
-    const options = {fields: {}}
+  test('object property', () => {
+    const options = { fields: {} }
     const type = require('./fixture/8.json')
 
-    const wrapper = mount(<Builder templates={templates} factories={factories}
-      options={options} type={type}/>)
+    const wrapper = mount(<Builder
+      templates={templates}
+      factories={factories}
+      options={options}
+      type={type}
+    />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
-  test('array item', function()
-  {
+  test('array item', () => {
     const options = {}
     const type = require('./fixture/7.json')
 
-    const wrapper = mount(<Builder templates={templates} factories={factories}
-      options={options} type={type}/>)
+    const wrapper = mount(<Builder
+      templates={templates}
+      factories={factories}
+      options={options}
+      type={type}
+    />)
 
     expect(wrapper).toMatchSnapshot()
   })
 })
 
-test('component options', function()
-{
+test('component options', () => {
   const tcombFormComponent = jest.fn(() => null)
 
   const customType = Builder.t.subtype(Builder.t.Str, s => s, 'customType')
   customType.getTcombFormFactory = jest.fn(() => tcombFormComponent)
 
-  const types = {customType}
+  const types = { customType }
   const type = require('./fixture/9.json')
 
-  const wrapper = mount(<Builder templates={templates} type={type}
-    types={types}/>)
+  const wrapper = mount(<Builder
+    templates={templates}
+    type={type}
+    types={types}
+  />)
 
   expect(wrapper).toMatchSnapshot()
 
   expect(tcombFormComponent.mock.calls.length).toBe(1)
-  expect(tcombFormComponent.mock.calls[0][0]).toMatchObject({options: {componentOption: 'blah'}})
+  expect(tcombFormComponent.mock.calls[0][0]).toMatchObject({ options: { componentOption: 'blah' } })
 })
 
-test('disable `submit` button if form is not valid', function()
-{
+test('disable `submit` button if form is not valid', () => {
   const onSubmit = jest.fn()
   set(onSubmit, 'meta.type.meta.name', 'submit')
 
@@ -199,19 +195,21 @@ test('disable `submit` button if form is not valid', function()
   const submit = Builder.t.subtype(Builder.t.Nil, s => s, 'submit')
   submit.getTcombFormFactory = jest.fn(() => tcombFormComponent)
 
-  const types = {submit}
+  const types = { submit }
   const type = require('./fixture/10.json')
 
-  const wrapper = mount(<Builder onSubmit={onSubmit} templates={templates}
-    type={type} types={types}/>)
+  const wrapper = mount(<Builder
+    onSubmit={onSubmit}
+    templates={templates}
+    type={type}
+    types={types}
+  />)
 
   expect(wrapper).toMatchSnapshot()
 })
 
-describe('clean labels', function()
-{
-  test("don't show 'optional' suffix on root `submit` button", function()
-  {
+describe('clean labels', () => {
+  test("don't show 'optional' suffix on root `submit` button", () => {
     const onSubmit = jest.fn()
     set(onSubmit, 'meta.type.meta.name', 'submit')
 
@@ -220,17 +218,20 @@ describe('clean labels', function()
     const submit = Builder.t.subtype(Builder.t.Nil, s => s, 'submit')
     submit.getTcombFormFactory = jest.fn(() => tcombFormComponent)
 
-    const types = {submit}
+    const types = { submit }
     const type = require('./fixture/10.json')
 
-    const wrapper = mount(<Builder onSubmit={onSubmit} templates={templates}
-      type={type} types={types}/>)
+    const wrapper = mount(<Builder
+      onSubmit={onSubmit}
+      templates={templates}
+      type={type}
+      types={types}
+    />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
-  test("don't show 'optional' suffix on nested `submit` button", function()
-  {
+  test("don't show 'optional' suffix on nested `submit` button", () => {
     const onSubmit = jest.fn()
     set(onSubmit, 'meta.type.meta.name', 'submit')
 
@@ -239,20 +240,26 @@ describe('clean labels', function()
     const submit = Builder.t.subtype(Builder.t.Nil, s => s, 'submit')
     submit.getTcombFormFactory = jest.fn(() => tcombFormComponent)
 
-    const types = {submit}
+    const types = { submit }
     const type = require('./fixture/11.json')
 
-    const wrapper = mount(<Builder onSubmit={onSubmit} templates={templates}
-      type={type} types={types}/>)
+    const wrapper = mount(<Builder
+      onSubmit={onSubmit}
+      templates={templates}
+      type={type}
+      types={types}
+    />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
-  test.skip('tuple', function()
-  {
+  test.skip('tuple', () => {
     const type = require('./fixture/12.json')
 
-    const wrapper = mount(<Builder templates={templates} type={type}/>)
+    const wrapper = mount(<Builder
+      templates={templates}
+      type={type}
+    />)
 
     expect(wrapper).toMatchSnapshot()
   })
