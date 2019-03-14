@@ -1,6 +1,6 @@
 {
   "name": "tcomb-form-native-builder",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "description": "Forms builder library for React Native",
   "scripts": {
     "lint": "eslint .",
@@ -28,7 +28,7 @@
     "tcomb-form-native": "^0.6.11",
     "tcomb-json-schema": "^0.3.2",
     "walk-object": "QuantumBA/walk-object",
-    "tcomb-form-native-builder-utils": "github:QuantumBA/tcomb-form-native-builder-utils"
+    "tcomb-form-native-builder-utils": "~0.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
