@@ -27,6 +27,7 @@ class Builder extends Component {
   /* eslint-disable */
   static propTypes = {
     // children: Type,
+    commentFilled: PropTypes.bool,
     context: PropTypes.object,
     factories: PropTypes.object,
     i18n: PropTypes.object,
@@ -140,8 +141,8 @@ class Builder extends Component {
     return { options, type, value }
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    this.setState(this._getState(props))
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) this.setState(this._getState(this.props))
   }
 
   extractDependencies() {
@@ -162,11 +163,12 @@ class Builder extends Component {
   // currently it enables/disables submit button depending on required fields
   // in this function we update dynamically values in the form depending onChanges
   _updateOptions(options, type, validate = false) {
+    const { commentFilled } = this.props
     const { _root } = this
     // show field errors
     if (_root && validate) _root.validate()
 
-    const disabled = { '$set': !(_root && _root.pureValidate().isValid()) }
+    const disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
     const patch = {}
     walkObject(type, ({ location, value }) => {
       if (get(value, 'meta.name') === 'submit') {
@@ -221,3 +223,4 @@ class Builder extends Component {
 Builder.t = t
 
 export default Builder
+
