@@ -51,10 +51,12 @@ class Builder extends Component {
     this.setState(state)
   }
 
-  // Fields with dependencies
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { type: { properties } } = this.props
     const { dependencies, value } = this.state
+    // eslint-disable-next-line
+    if (prevProps !== this.props) this.setState(this._getState(this.props))
+    // Fields with dependencies
     if (prevState.value !== value) {
       Object.entries(dependencies).forEach(([dependency, dependantFields]) => {
         if (prevState.value[dependency] !== value[dependency]) {
@@ -141,10 +143,6 @@ class Builder extends Component {
     return { options, type, value }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) this.setState(this._getState(this.props))
-  }
-
   extractDependencies() {
     const { type } = this.props
     const dependencies = {}
@@ -163,7 +161,7 @@ class Builder extends Component {
   // currently it enables/disables submit button depending on required fields
   // in this function we update dynamically values in the form depending onChanges
   _updateOptions(options, type, validate = false) {
-    const { commentFilled } = this.props
+    const { commentFilled = true } = this.props
     const { _root } = this
     // show field errors
     if (_root && validate) _root.validate()
@@ -223,4 +221,3 @@ class Builder extends Component {
 Builder.t = t
 
 export default Builder
-
