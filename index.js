@@ -27,6 +27,7 @@ class Builder extends Component {
   /* eslint-disable */
   static propTypes = {
     // children: Type,
+    onChangeWidgetProperty: PropTypes.func,
     commentFilled: PropTypes.bool,
     context: PropTypes.object,
     factories: PropTypes.object,
@@ -93,7 +94,7 @@ class Builder extends Component {
     this.setState({ options: this._updateOptions(options, type, true), value })
   }
 
-  _getState({ children, factories, formats = {}, onSubmit, requestUploadUrl, options, type, types = {}, value }) {
+  _getState({ onChangeWidgetProperty, children, factories, formats = {}, onSubmit, requestUploadUrl, options, type, types = {}, value }) {
     // Remove all the registered formats and types
     transform.resetFormats()
     transform.resetTypes()
@@ -125,7 +126,7 @@ class Builder extends Component {
     if (!(type instanceof Function)) {
       const propValue = value
 
-      options = getOptions(type, options, factories)
+      options = getOptions(type, options, factories, onChangeWidgetProperty)
 
       // update current values with prop values (controlled component)
       value = getValue(type)

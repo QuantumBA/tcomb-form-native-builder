@@ -36,7 +36,7 @@ function reduceProperties(required = [], [name, { type }]) {
 
 // get all valid options where options are all modifiers of a component including tcomb and tcomb-native-builder-component valid options
 // besides it sets up the required options for tcomb to render components
-export function getOptions({ factory, items, properties = {}, ...componentOptions }, options = {}, factories = {}) {
+export function getOptions({ factory, items, properties = {}, ...componentOptions }, options = {}, factories = {}, onChangeWidgetProperty) {
   if (factory) {
     if (typeof factory === 'string') {
       const factoryName = factory
@@ -65,7 +65,7 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
   // if field is a object and has subfields it process children options recursevily
   let { fields } = options
   Object.entries(properties).forEach(([name, property]) => {
-    const result = getOptions(property, fields && fields[name], factories)
+    const result = getOptions(property, fields && fields[name], factories, onChangeWidgetProperty)
     if (result) fields = { ...fields, [name]: result }
   })
   if (fields) options.fields = fields
@@ -76,6 +76,10 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
     options.remote = componentOptions.remote
   } else if (componentOptions.meta && componentOptions.meta.dependencies) {
     options.meta = componentOptions.meta
+  }
+
+  if (componentOptions.type === 'actionSwitch') {
+    componentOptions.onPress = onChangeWidgetProperty
   }
 
   // Component specific options
