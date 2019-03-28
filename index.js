@@ -5,7 +5,7 @@ import t                  from 'tcomb-form-native/lib'
 import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform          from 'tcomb-json-schema'
-import walkObject         from 'walk-object'
+import walkObject         from '@foqum/walk-object'
 import { processRemoteRequests } from 'tcomb-form-native-builder-utils'
 
 import {
