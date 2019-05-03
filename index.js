@@ -26,7 +26,6 @@ class Builder extends Component {
 
   /* eslint-disable */
   static propTypes = {
-    // children: Type,
     onChangeWidgetProperty: PropTypes.func,
     commentFilled: PropTypes.bool,
     context: PropTypes.object,
@@ -52,6 +51,7 @@ class Builder extends Component {
     this.setState(state)
   }
 
+  // TODO: Clean
   componentDidUpdate(prevProps, prevState) {
     const { type: { properties } } = this.props
     const { dependencies, value } = this.state
@@ -94,7 +94,21 @@ class Builder extends Component {
     this.setState({ options: this._updateOptions(options, type, true), value })
   }
 
-  _getState({ onChangeWidgetProperty, children, factories, formats = {}, onSubmit, requestUploadUrl, url, options, type, types = {}, value }) {
+  _getState(props) {
+
+    const {
+      onChangeWidgetProperty,
+      children,
+      factories,
+      formats = {},
+      onSubmit,
+      requestUploadUrl,
+      url,
+      types = {},
+    } = props
+
+    let { options = {}, type, value } = props
+
     // Remove all the registered formats and types
     transform.resetFormats()
     transform.resetTypes()
@@ -104,23 +118,9 @@ class Builder extends Component {
     Object.entries(types).forEach(entry => transform.registerType(...entry))
 
     // Pass `onSubmit` callback to the `Form` instance
-    if (onSubmit) {
-      if (!options) options = {}
-
-      options.onSubmit = onSubmit
-    }
-
-    if (requestUploadUrl) {
-      if (!options) options = {}
-
-      options.requestUploadUrl = requestUploadUrl
-    }
-
-    if (url) {
-      if (!options) options = {}
-
-      options.url = url
-    }
+    if (onSubmit) options.onSubmit = onSubmit
+    if (requestUploadUrl) options.requestUploadUrl = requestUploadUrl
+    if (url) options.url = url
 
     // Get type definition
     type = type || children || {}
@@ -170,10 +170,15 @@ class Builder extends Component {
   _updateOptions(options, type, validate = false) {
     const { commentFilled = true } = this.props
     const { _root } = this
-    // show field errors
-    if (_root && validate) _root.validate()
 
-    const disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
+    let disabled = { '$set': true }
+
+    // Enable buttons
+    if (_root) {
+      if (validate) _root.validate() // show errors
+      disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
+    }
+
     const patch = {}
     walkObject(type, ({ location, value }) => {
       if (get(value, 'meta.name') === 'submit') {
