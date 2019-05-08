@@ -48,6 +48,7 @@ class Builder extends Component {
   componentDidMount() {
     const state = this._getState(this.props)
     state.dependencies = this.extractDependencies()
+    state.submitted = false
     this.setState(state)
   }
 
@@ -94,6 +95,10 @@ class Builder extends Component {
     this.setState({ options: this._updateOptions(options, type, true), value })
   }
 
+  _triggerValidation = () => {
+    this.setState({ submitted: true })
+  }
+
   _getState(props) {
 
     const {
@@ -121,6 +126,7 @@ class Builder extends Component {
     if (onSubmit) options.onSubmit = onSubmit
     if (requestUploadUrl) options.requestUploadUrl = requestUploadUrl
     if (url) options.url = url
+    options.triggerValidation = this._triggerValidation
 
     // Get type definition
     type = type || children || {}
@@ -175,7 +181,7 @@ class Builder extends Component {
 
     // Enable buttons
     if (_root) {
-      if (validate) _root.validate() // show errors
+      if (this.state.submitted && validate) _root.validate() // show errors
       disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
     }
 
@@ -209,7 +215,6 @@ class Builder extends Component {
     const { context, i18n, stylesheet, templates } = this.props
     const { options, type, value } = this.state
     options.config = Object.assign({ fields: options.fields }, options.config)
-
     return (
       <Form
         context={context}
