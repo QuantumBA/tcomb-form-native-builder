@@ -94,17 +94,7 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
 
 export function getValue({ items, properties = {}, value }) {
   // array items
-  if (items && value) {
-    value.forEach((item) => {
-      Object.entries(item).forEach(([k, v]) => {
-        const date = new Date(Date.parse(v))
-        // eslint-disable-next-line
-        if (!isNaN(date) && date.toISOString() === String(v)) {
-          item[k] = date.toLocaleDateString()
-        }
-      })
-    })
-
+  if (items) {
     return value
   }
 
