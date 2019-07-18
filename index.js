@@ -1,4 +1,4 @@
-import { get, set }       from 'object-path'
+import objectPath, { get, set }       from 'object-path'
 import PropTypes          from 'prop-types'
 import React, { Component } from 'react' // eslint-disable-line
 import t                  from 'tcomb-form-native/lib'
@@ -21,6 +21,44 @@ Form.stylesheet = defaultStylesheet
 
 const REGEX_REPLACE_PATH = /(meta\.type\.)?meta\.props/
 
+function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = false) {
+  // transform: [{'id': '0', 'label': 'a'}, {'id': '1', 'label': 'b'}]
+  // into     : {'0': 'a', '1': 'b'}
+  const result = {}
+  objectArray.forEach((item) => {
+    item = objectPath(item)
+    
+    const id = item.get(fieldId)
+    const label = item.get(fieldLabel)
+
+    if (omitNullVal) {
+      if (id !== null && label !== null) result[id] = label
+    } else {  
+      if (id == null) throw new Error('`id` is null or undefined')
+      if (label == null) throw new Error('`label` is null or undefined')
+      result[id] = label
+    }
+  })
+  return result
+}
+
+function objectEquals(a, b) {
+  var aKeys = Object.keys(a).sort();
+  var bKeys = Object.keys(b).sort();
+  if (aKeys.length !== bKeys.length) {
+    return false
+  }
+  for (var i = 0; i < aKeys.length; i++) {
+    if (a[aKeys[i]] !== b[bKeys[i]]) {
+      // return true when comparing empty object with undefined
+      if((JSON.stringify(a[aKeys[i]]) === '{}' || a[aKeys[i]] === undefined) && (JSON.stringify(b[bKeys[i]]) === '{}' || b[bKeys[i]] === undefined)) {
+        return true
+      }
+      return false
+    }
+  }
+  return true
+}
 
 class Builder extends Component {
 
@@ -59,29 +97,38 @@ class Builder extends Component {
     // eslint-disable-next-line
     if (prevProps !== this.props) this.setState(this._getState(this.props))
     // Fields with dependencies
-    if (prevState.value !== value) {
+    if ((value && prevState.value) && !objectEquals(prevState.value, value)) {
       Object.entries(dependencies).forEach(([dependency, dependantFields]) => {
-        if (prevState.value[dependency] !== value[dependency]) {
+        if (JSON.stringify(prevState.value[dependency]) !== JSON.stringify(value[dependency])) {
+          const requests = []
+          const dependentFieldsArray = []
           dependantFields.forEach((dependentField) => {
-            value[dependentField] = ''
             const replaceString = '${' + dependency + '}'  // eslint-disable-line
             let query = properties[dependentField].meta.body
             query = query.replace(replaceString, `"${value[dependency]}"`)
-            processRemoteRequests(properties[dependentField].uri, {}, {}, query).then((response) => {
-              const { path } = properties[dependentField].meta
-              const key = properties[dependentField].meta.fieldLabel
+            dependentFieldsArray.push(dependentField)
+            requests.push(processRemoteRequests(properties[dependentField].uri, {}, {}, query))
+          })
+          Promise.all(requests).then((responses) => {
+            responses.forEach((response, i) => {
+              const { path } = properties[dependentFieldsArray[i]].meta
+              const key = properties[dependentFieldsArray[i]].meta.fieldLabel
               const fieldValue = get(response, path) ? get(response, path)[key] : ''  // eslint-disable-line
               const date = new Date(Date.parse(fieldValue))
               if (!isNaN(date) && date.toISOString() === String(fieldValue)) { // eslint-disable-line
-                value[dependentField] = date.toLocaleDateString()
+                value[dependentFieldsArray[i]] = date.toLocaleDateString()
               } else if (typeof fieldValue === 'boolean') {
-                value[dependentField] = fieldValue
+                value[dependentFieldsArray[i]] = fieldValue
+              } else if (Array.isArray(fieldValue)) {
+                const { fieldID, fieldLabelIfDependency } = properties[dependentFieldsArray[i]].meta
+                value[dependentFieldsArray[i]] = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
+                properties[dependentFieldsArray[i]].enum = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
               } else {
-                value[dependentField] = String(fieldValue)
+                value[dependentFieldsArray[i]] = String(fieldValue)
               }
-              this._onChange(value)
             })
-          })
+            this._onChange(value)
+          }).catch((error) => console.error(error))
         }
       })
     }
