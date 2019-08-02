@@ -27,13 +27,13 @@ function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = fals
   const result = {}
   objectArray.forEach((item) => {
     item = objectPath(item)
-    
+
     const id = item.get(fieldId)
     const label = item.get(fieldLabel)
 
     if (omitNullVal) {
       if (id !== null && label !== null) result[id] = label
-    } else {  
+    } else {
       if (id == null) throw new Error('`id` is null or undefined')
       if (label == null) throw new Error('`label` is null or undefined')
       result[id] = label
@@ -43,15 +43,15 @@ function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = fals
 }
 
 function objectEquals(a, b) {
-  var aKeys = Object.keys(a).sort();
-  var bKeys = Object.keys(b).sort();
+  const aKeys = Object.keys(a).sort()
+  const bKeys = Object.keys(b).sort()
   if (aKeys.length !== bKeys.length) {
     return false
   }
-  for (var i = 0; i < aKeys.length; i++) {
+  for (let i = 0; i < aKeys.length; i += 1) {
     if (a[aKeys[i]] !== b[bKeys[i]]) {
       // return true when comparing empty object with undefined
-      if((JSON.stringify(a[aKeys[i]]) === '{}' || a[aKeys[i]] === undefined) && (JSON.stringify(b[bKeys[i]]) === '{}' || b[bKeys[i]] === undefined)) {
+      if ((JSON.stringify(a[aKeys[i]]) === '{}' || a[aKeys[i]] === undefined) && (JSON.stringify(b[bKeys[i]]) === '{}' || b[bKeys[i]] === undefined)) {
         return true
       }
       return false
@@ -128,7 +128,7 @@ class Builder extends Component {
               }
             })
             this._onChange(value)
-          }).catch((error) => console.error(error))
+          }).catch(error => console.error(error))
         }
       })
     }
@@ -223,12 +223,13 @@ class Builder extends Component {
   _updateOptions(options, type, validate = false) {
     const { commentFilled = true } = this.props
     const { _root } = this
+    const { submitted } = this.state
 
     let disabled = { '$set': true }
 
     // Enable buttons
     if (_root) {
-      if (this.state.submitted && validate) _root.validate() // show errors
+      if (submitted && validate) _root.validate() // show errors
       disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
     }
 
