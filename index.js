@@ -68,28 +68,49 @@ class Builder extends Component {
           const requests = []
           const dependentFieldsArray = []
           dependantFields.forEach((dependentField) => {
-            const replaceString = '${' + dependency + '}'  // eslint-disable-line
-            let query = properties[dependentField].meta.body
-            query = query.replace(replaceString, `"${value[dependency]}"`)
-            dependentFieldsArray.push(dependentField)
-            requests.push(processRemoteRequests(properties[dependentField].uri, {}, {}, query))
+            // If dependant fields are in a sublist
+            if (typeof dependentField === 'object') {
+              Object.entries(dependentField).forEach(([key, fields]) => {
+                // console.log(prevState.value[dependency], prevState[dependency][key])
+                fields.forEach((field, i) => {
+                  const previousValue = prevState.value[dependency] && prevState.value[dependency][i] && prevState.value[dependency][i][key]
+                  const currentValue = value[dependency] && value[dependency][i] && value[dependency][i][key]
+                  if (previousValue !== currentValue) {
+                    const replaceString = '${' + key + '}'  // eslint-disable-line
+                    let query = properties[dependency].items.properties[field].meta.body
+                    const objectProperties = properties[dependency].items.properties[field]
+                    if (value[dependency][i] && value[dependency][i][key]) {
+                      query = query.replace(replaceString, `"${value[dependency][i][key]}"`)
+                      // First item: object properties to get the path in the response and second item: the value path.
+                      dependentFieldsArray.push([objectProperties, `${dependency}.${i}.${field}`])
+                      requests.push(processRemoteRequests(properties[dependency].items.properties[field].uri, {}, {}, query))
+                    }
+                  }
+                })
+
+              })
+            } else {
+              const replaceString = '${' + dependency + '}'  // eslint-disable-line
+              let query = properties[dependentField].meta.body
+              query = query.replace(replaceString, `"${value[dependency]}"`)
+              dependentFieldsArray.push([properties[dependentField], dependentField])
+              requests.push(processRemoteRequests(properties[dependentField].uri, {}, {}, query))
+            }
           })
           Promise.all(requests).then((responses) => {
             responses.forEach((response, i) => {
-              const { path } = properties[dependentFieldsArray[i]].meta
-              const key = properties[dependentFieldsArray[i]].meta.fieldLabel
+              const { path } = dependentFieldsArray[i][0].meta
+              const key = dependentFieldsArray[i][0].meta.fieldLabel
               const fieldValue = get(response, path) ? get(response, path)[key] : ''  // eslint-disable-line
               const date = new Date(Date.parse(fieldValue))
               if (!isNaN(date) && date.toISOString() === String(fieldValue)) { // eslint-disable-line
-                value[dependentFieldsArray[i]] = date.toLocaleDateString()
-              } else if (typeof fieldValue === 'boolean') {
-                value[dependentFieldsArray[i]] = fieldValue
+                set(value, dependentFieldsArray[i][1], date.toLocaleDateString())
               } else if (Array.isArray(fieldValue)) {
-                const { fieldID, fieldLabelIfDependency } = properties[dependentFieldsArray[i]].meta
-                value[dependentFieldsArray[i]] = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
-                properties[dependentFieldsArray[i]].enum = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
+                const { fieldID, fieldLabelIfDependency } = properties[dependentFieldsArray[i][1]].meta
+                set(value, dependentFieldsArray[i][1], objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency))
+                properties[dependentFieldsArray[i][1]].enum = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
               } else {
-                value[dependentFieldsArray[i]] = String(fieldValue)
+                set(value, dependentFieldsArray[i][1], fieldValue)
               }
             })
             this._onChange(value)
@@ -114,7 +135,20 @@ class Builder extends Component {
   _extractDependencies() {
     const { type } = this.props
     const dependencies = {}
+    const dependency = {}
     Object.entries(type.properties).forEach(([property, fields]) => {
+      if (fields.type === 'array') {
+        Object.entries(fields.items.properties).forEach(([item, value]) => {
+          if (value.meta && value.meta.dependencies) {
+            value.meta.dependencies.forEach((dep) => {
+              dependency[dep] = dependency[dep] || []
+              dependency[dep].push(item)
+            })
+          }
+        })
+        dependencies[property] = dependencies[property] || []
+        dependencies[property].push(dependency)
+      }
       if (fields.meta && fields.meta.dependencies) {
         fields.meta.dependencies.forEach((dep) => {
           dependencies[dep] = dependencies[dep] || []
@@ -122,7 +156,6 @@ class Builder extends Component {
         })
       }
     })
-
     return dependencies
   }
 
