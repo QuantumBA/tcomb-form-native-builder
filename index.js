@@ -33,7 +33,7 @@ function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = fals
 
     if (omitNullVal) {
       if (id !== null && label !== null) result[id] = label
-    } else {
+    } else {  
       if (id == null) throw new Error('`id` is null or undefined')
       if (label == null) throw new Error('`label` is null or undefined')
       result[id] = label
@@ -43,12 +43,12 @@ function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = fals
 }
 
 function objectEquals(a, b) {
-  const aKeys = Object.keys(a).sort()
-  const bKeys = Object.keys(b).sort()
+  var aKeys = Object.keys(a).sort();
+  var bKeys = Object.keys(b).sort();
   if (aKeys.length !== bKeys.length) {
     return false
   }
-  for (let i = 0; i < aKeys.length; i += 1) {
+  for (var i = 0; i < aKeys.length; i++) {
     if (a[aKeys[i]] !== b[bKeys[i]]) {
       // return true when comparing empty object with undefined
       if ((JSON.stringify(a[aKeys[i]]) === '{}' || a[aKeys[i]] === undefined) && (JSON.stringify(b[bKeys[i]]) === '{}' || b[bKeys[i]] === undefined)) {
@@ -103,28 +103,44 @@ class Builder extends Component {
           const requests = []
           const dependentFieldsArray = []
           dependantFields.forEach((dependentField) => {
-            const replaceString = '${' + dependency + '}'  // eslint-disable-line
-            let query = properties[dependentField].meta.body
-            query = query.replace(replaceString, `"${value[dependency]}"`)
-            dependentFieldsArray.push(dependentField)
-            requests.push(processRemoteRequests(properties[dependentField].uri, {}, {}, query))
+            // If dependant fields are in a sublist
+            if (typeof dependentField === 'object') {
+              Object.entries(dependentField).forEach(([key, fields]) => {
+                fields.forEach((field, i) => {
+                  const replaceString = '${' + key + '}'  // eslint-disable-line
+                  let query = properties[dependency].items.properties[field].meta.body
+                  const objectProperties = properties[dependency].items.properties[field]
+                  if (value[dependency][i] && value[dependency][i][key]) {
+                    query = query.replace(replaceString, `"${value[dependency][i][key]}"`)
+                    // First item: object properties to get the path in the response and second item: the value path.
+                    dependentFieldsArray.push([objectProperties, `${dependency}.${i}.${field}`])
+                    requests.push(processRemoteRequests(properties[dependency].items.properties[field].uri, {}, {}, query))
+                  }
+                })
+
+              })
+            } else {
+              const replaceString = '${' + dependency + '}'  // eslint-disable-line
+              let query = properties[dependentField].meta.body
+              query = query.replace(replaceString, `"${value[dependency]}"`)
+              dependentFieldsArray.push([properties[dependentField], dependentField])
+              requests.push(processRemoteRequests(properties[dependentField].uri, {}, {}, query))
+            }
           })
           Promise.all(requests).then((responses) => {
             responses.forEach((response, i) => {
-              const { path } = properties[dependentFieldsArray[i]].meta
-              const key = properties[dependentFieldsArray[i]].meta.fieldLabel
+              const { path } = dependentFieldsArray[i][0].meta
+              const key = dependentFieldsArray[i][0].meta.fieldLabel
               const fieldValue = get(response, path) ? get(response, path)[key] : ''  // eslint-disable-line
               const date = new Date(Date.parse(fieldValue))
               if (!isNaN(date) && date.toISOString() === String(fieldValue)) { // eslint-disable-line
-                value[dependentFieldsArray[i]] = date.toLocaleDateString()
-              } else if (typeof fieldValue === 'boolean') {
-                value[dependentFieldsArray[i]] = fieldValue
+                set(value, dependentFieldsArray[i][1], date.toLocaleDateString())
               } else if (Array.isArray(fieldValue)) {
-                const { fieldID, fieldLabelIfDependency } = properties[dependentFieldsArray[i]].meta
-                value[dependentFieldsArray[i]] = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
-                properties[dependentFieldsArray[i]].enum = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
+                const { fieldID, fieldLabelIfDependency } = properties[dependentFieldsArray[i][1]].meta
+                set(value, dependentFieldsArray[i][1], objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency))
+                properties[dependentFieldsArray[i][1]].enum = objectArray2Object(fieldValue, fieldID, fieldLabelIfDependency)
               } else {
-                value[dependentFieldsArray[i]] = String(fieldValue)
+                set(value, dependentFieldsArray[i][1], fieldValue)
               }
             })
             this._onChange(value)
@@ -206,7 +222,20 @@ class Builder extends Component {
   extractDependencies() {
     const { type } = this.props
     const dependencies = {}
+    const dependency = {}
     Object.entries(type.properties).forEach(([property, fields]) => {
+      if (fields.type === 'array') {
+        Object.entries(fields.items.properties).forEach(([item, value]) => {
+          if (value.meta && value.meta.dependencies) {
+            value.meta.dependencies.forEach((dep) => {
+              dependency[dep] = dependency[dep] || []
+              dependency[dep].push(item)
+            })
+          }
+        })
+        dependencies[property] = dependencies[property] || []
+        dependencies[property].push(dependency)
+      }
       if (fields.meta && fields.meta.dependencies) {
         fields.meta.dependencies.forEach((dep) => {
           dependencies[dep] = dependencies[dep] || []
@@ -214,7 +243,6 @@ class Builder extends Component {
         })
       }
     })
-
     return dependencies
   }
 
@@ -223,13 +251,12 @@ class Builder extends Component {
   _updateOptions(options, type, validate = false) {
     const { commentFilled = true } = this.props
     const { _root } = this
-    const { submitted } = this.state
 
     let disabled = { '$set': true }
 
     // Enable buttons
     if (_root) {
-      if (submitted && validate) _root.validate() // show errors
+      if (this.state.submitted && validate) _root.validate() // show errors
       disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
     }
 
