@@ -106,15 +106,20 @@ class Builder extends Component {
             // If dependant fields are in a sublist
             if (typeof dependentField === 'object') {
               Object.entries(dependentField).forEach(([key, fields]) => {
+                // console.log(prevState.value[dependency], prevState[dependency][key])
                 fields.forEach((field, i) => {
-                  const replaceString = '${' + key + '}'  // eslint-disable-line
-                  let query = properties[dependency].items.properties[field].meta.body
-                  const objectProperties = properties[dependency].items.properties[field]
-                  if (value[dependency][i] && value[dependency][i][key]) {
-                    query = query.replace(replaceString, `"${value[dependency][i][key]}"`)
-                    // First item: object properties to get the path in the response and second item: the value path.
-                    dependentFieldsArray.push([objectProperties, `${dependency}.${i}.${field}`])
-                    requests.push(processRemoteRequests(properties[dependency].items.properties[field].uri, {}, {}, query))
+                  const previousValue = prevState.value[dependency] && prevState.value[dependency][i] && prevState.value[dependency][i][key]
+                  const currentValue = value[dependency] && value[dependency][i] && value[dependency][i][key]
+                  if (previousValue !== currentValue) {
+                    const replaceString = '${' + key + '}'  // eslint-disable-line
+                    let query = properties[dependency].items.properties[field].meta.body
+                    const objectProperties = properties[dependency].items.properties[field]
+                    if (value[dependency][i] && value[dependency][i][key]) {
+                      query = query.replace(replaceString, `"${value[dependency][i][key]}"`)
+                      // First item: object properties to get the path in the response and second item: the value path.
+                      dependentFieldsArray.push([objectProperties, `${dependency}.${i}.${field}`])
+                      requests.push(processRemoteRequests(properties[dependency].items.properties[field].uri, {}, {}, query))
+                    }
                   }
                 })
 
@@ -144,7 +149,7 @@ class Builder extends Component {
               }
             })
             this._onChange(value)
-          }).catch(error => console.error(error))
+          }).catch((error) => console.error(error))
         }
       })
     }
