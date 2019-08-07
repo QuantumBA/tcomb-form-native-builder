@@ -8,7 +8,7 @@ import defaultStylesheet          from 'tcomb-form-native/lib/stylesheets/bootst
 import transform                  from 'tcomb-json-schema'
 import walkObject                 from '@foqum/walk-object'
 import { processRemoteRequests }  from 'tcomb-form-native-builder-utils'
-import { modal as Modal }         from 'tcomb-form-native-builder-components'
+import { Modal }         from 'tcomb-form-native-builder-components'
 
 import {
   jsonToTcombObjectAndUpdate,
