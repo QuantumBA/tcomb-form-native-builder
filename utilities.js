@@ -1,6 +1,8 @@
-import t                  from 'tcomb-form-native/lib'
-import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
-import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
+import objectPath, { set }  from 'object-path'
+import t                    from 'tcomb-form-native/lib'
+import defaultI18n          from 'tcomb-form-native/lib/i18n/en'
+import defaultStylesheet    from 'tcomb-form-native/lib/stylesheets/bootstrap'
+import walkObject           from '@foqum/walk-object'
 
 
 const { Form } = t.form
@@ -13,7 +15,7 @@ Form.stylesheet = defaultStylesheet
 
 const TYPES_ALWAYS_REQUIRED = ['image', 'submit']
 
-export function filterComponentOptions(entry) {
+function filterComponentOptions(entry) {
   let filterList = []
 
   // if field has dependencies do not remove meta information
@@ -45,7 +47,6 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
         throw new ReferenceError(`Factory '${factoryName}' not registered`)
       }
     }
-
     options.factory = factory
   }
 
@@ -70,7 +71,7 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
   })
   if (fields) options.fields = fields
 
-  // pass meta if the field is submit or if field has any dependency
+  // pass meta and remote if the field is submit or if field has any dependency
   if (componentOptions.type === 'submit') {
     options.meta = componentOptions.meta
     options.remote = componentOptions.remote
@@ -78,11 +79,13 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
     options.meta = componentOptions.meta
   }
 
+  // switch actions (WIP)
   if (componentOptions.type === 'actionSwitch') {
     componentOptions.onPress = onChangeWidgetProperty
   }
 
   // Component specific options
+  // be aware of filterComponentOptions call where all invalid options are filtered
   Object.entries(componentOptions)
     .filter(filterComponentOptions)
     .forEach(([key, value]) => {
@@ -143,4 +146,65 @@ export function cleanLabels(type) {
 
 function cleanPropertiesLabels([name, property]) {
   this[name] = cleanLabels(property)
+}
+
+export function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = false) {
+  // transform: [{'id': '0', 'label': 'a'}, {'id': '1', 'label': 'b'}]
+  // into     : {'0': 'a', '1': 'b'}
+  const result = {}
+  objectArray.forEach((item) => {
+    item = objectPath(item)
+
+    const id = item.get(fieldId)
+    const label = item.get(fieldLabel)
+
+    if (omitNullVal) {
+      if (id !== null && label !== null) result[id] = label
+    } else {
+      if (id == null) throw new Error('`id` is null or undefined')
+      if (label == null) throw new Error('`label` is null or undefined')
+      result[id] = label
+    }
+  })
+  return result
+}
+
+export function objectEquals(a, b) {
+  const aKeys = Object.keys(a).sort()
+  const bKeys = Object.keys(b).sort()
+  if (aKeys.length !== bKeys.length) {
+    return false
+  }
+  for (let i = 0; i < aKeys.length; i += 1) {
+    if (a[aKeys[i]] !== b[bKeys[i]]) {
+      // return true when comparing empty object with undefined
+      if ((JSON.stringify(a[aKeys[i]]) === '{}' || a[aKeys[i]] === undefined) && (JSON.stringify(b[bKeys[i]]) === '{}' || b[bKeys[i]] === undefined)) {
+        return true
+      }
+      return false
+    }
+  }
+  return true
+}
+
+export function jsonToTcombObjectAndUpdate(jsonObject, value, options, factories, transform, onChangeWidgetProperty) {
+  // Transform the form (type) from JSON object to tcomb and updates the form if any value has changed
+  const newFormValue = value
+
+  // get valid options from the json
+  options = getOptions(jsonObject, options, factories, onChangeWidgetProperty)
+
+  // update value (the original form empty) with prop values (the new form with all the changes)
+  // getValue return the form in the original state (without values)
+  let oldFormValue = getValue(jsonObject) // eslint-disable-line
+
+  // use walkobject to update oldFormValue to the new state
+  walkObject(newFormValue, ({ isLeaf, location, value: newFormValue }) => {
+    if (isLeaf) set(oldFormValue, location, newFormValue)
+  })
+
+  // add fields if required
+  const tcombObject = transform(cleanLabels(jsonObject))
+
+  return [tcombObject, options, oldFormValue]
 }
