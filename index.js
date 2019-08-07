@@ -1,12 +1,15 @@
-import objectPath, { get, set }       from 'object-path'
-import PropTypes          from 'prop-types'
-import React, { Component } from 'react' // eslint-disable-line
-import t                  from 'tcomb-form-native/lib'
-import defaultI18n        from 'tcomb-form-native/lib/i18n/en'
-import defaultStylesheet  from 'tcomb-form-native/lib/stylesheets/bootstrap'
-import transform          from 'tcomb-json-schema'
-import walkObject         from '@foqum/walk-object'
-import { processRemoteRequests } from 'tcomb-form-native-builder-utils'
+import objectPath, { get, set }   from 'object-path'
+import PropTypes                  from 'prop-types'
+import React, { Component }       from 'react'
+import { View }                   from 'react-native'
+import { COLOR }                  from 'react-native-material-ui'
+import t                          from 'tcomb-form-native/lib'
+import defaultI18n                from 'tcomb-form-native/lib/i18n/en'
+import defaultStylesheet          from 'tcomb-form-native/lib/stylesheets/bootstrap'
+import transform                  from 'tcomb-json-schema'
+import walkObject                 from '@foqum/walk-object'
+import { processRemoteRequests }  from 'tcomb-form-native-builder-utils'
+import Modal                      from './Modal'
 
 import {
   getOptions,
@@ -260,23 +263,37 @@ class Builder extends Component {
   }
 
   render() {
-    const { context, i18n, stylesheet, templates } = this.props
-    const { options, type, value } = this.state
+    const { context, i18n, stylesheet, templates, colorTheme } = this.props
+    const { options, type, value, modalFunction } = this.state
     options.config = Object.assign({ fields: options.fields }, options.config)
+    /*
+      Show or hide the confirmation modal when submitting the form by saving
+      the Modal class method "showModal" in the Builder state to pass it down
+      to the tcomb Form components (i.e. submit.js in builder-components),
+      where it will be called once the form is validated.
+      NOTE - See Modal prop "setModalFunction" in the render() below
+    */
+    options.showModal = modalFunction
     return (
-      <Form
-        context={context}
-        i18n={i18n || defaultI18n}
-        onChange={this._onChange}
-        options={options}
-        ref={(component) => {
-          this._root = component
-        }}
-        stylesheet={stylesheet}
-        templates={templates}
-        type={type}
-        value={value}
-      />
+      <View>
+        <Form
+          context={context}
+          i18n={i18n || defaultI18n}
+          onChange={this._onChange}
+          options={options}
+          ref={(component) => {
+            this._root = component
+          }}
+          stylesheet={stylesheet}
+          templates={templates}
+          type={type}
+          value={value}
+        />
+        <Modal
+          setModalFunction={(modalFunc) => { this.setState({ modalFunction: modalFunc }) }}
+          buttonColor={COLOR[colorTheme]}
+        />
+      </View>
     )
   }
 
