@@ -1,15 +1,14 @@
-import objectPath, { get, set }   from 'object-path'
+import { get, set }   from 'object-path'
 import PropTypes                  from 'prop-types'
 import React, { Component }       from 'react'
 import { View }                   from 'react-native'
-import { COLOR }                  from 'react-native-material-ui'
 import t                          from 'tcomb-form-native/lib'
 import defaultI18n                from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet          from 'tcomb-form-native/lib/stylesheets/bootstrap'
 import transform                  from 'tcomb-json-schema'
 import walkObject                 from '@foqum/walk-object'
 import { processRemoteRequests }  from 'tcomb-form-native-builder-utils'
-import Modal                      from './Modal'
+import { modal as Modal }         from 'tcomb-form-native-builder-components'
 
 import {
   jsonToTcombObjectAndUpdate,
@@ -251,7 +250,7 @@ class Builder extends Component {
   }
 
   render() {
-    const { context, i18n, stylesheet, templates, colorTheme } = this.props
+    const { context, i18n, stylesheet, templates, buttonColor } = this.props
     const { options, type, value, modalFunction } = this.state
     options.config = Object.assign({ fields: options.fields }, options.config)
     /*
@@ -279,7 +278,7 @@ class Builder extends Component {
         />
         <Modal
           setModalFunction={(modalFunc) => { this.setState({ modalFunction: modalFunc }) }}
-          buttonColor={COLOR[colorTheme]}
+          buttonColor={buttonColor}
         />
       </View>
     )
