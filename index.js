@@ -1,4 +1,4 @@
-import objectPath, { get, set }       from 'object-path'
+import { get, set }       from 'object-path'
 import PropTypes          from 'prop-types'
 import React, { Component } from 'react' // eslint-disable-line
 import t                  from 'tcomb-form-native/lib'
@@ -9,9 +9,9 @@ import walkObject         from '@foqum/walk-object'
 import { processRemoteRequests } from 'tcomb-form-native-builder-utils'
 
 import {
-  getOptions,
-  getValue,
-  cleanLabels,
+  jsonToTcombObjectAndUpdate,
+  objectArray2Object,
+  objectEquals,
 } from './utilities'
 
 const { Form } = t.form
@@ -21,44 +21,6 @@ Form.stylesheet = defaultStylesheet
 
 const REGEX_REPLACE_PATH = /(meta\.type\.)?meta\.props/
 
-function objectArray2Object(objectArray, fieldId, fieldLabel, omitNullVal = false) {
-  // transform: [{'id': '0', 'label': 'a'}, {'id': '1', 'label': 'b'}]
-  // into     : {'0': 'a', '1': 'b'}
-  const result = {}
-  objectArray.forEach((item) => {
-    item = objectPath(item)
-
-    const id = item.get(fieldId)
-    const label = item.get(fieldLabel)
-
-    if (omitNullVal) {
-      if (id !== null && label !== null) result[id] = label
-    } else {
-      if (id == null) throw new Error('`id` is null or undefined')
-      if (label == null) throw new Error('`label` is null or undefined')
-      result[id] = label
-    }
-  })
-  return result
-}
-
-function objectEquals(a, b) {
-  const aKeys = Object.keys(a).sort()
-  const bKeys = Object.keys(b).sort()
-  if (aKeys.length !== bKeys.length) {
-    return false
-  }
-  for (let i = 0; i < aKeys.length; i += 1) {
-    if (a[aKeys[i]] !== b[bKeys[i]]) {
-      // return true when comparing empty object with undefined
-      if ((JSON.stringify(a[aKeys[i]]) === '{}' || a[aKeys[i]] === undefined) && (JSON.stringify(b[bKeys[i]]) === '{}' || b[bKeys[i]] === undefined)) {
-        return true
-      }
-      return false
-    }
-  }
-  return true
-}
 
 class Builder extends Component {
 
@@ -84,9 +46,12 @@ class Builder extends Component {
   }
 
   componentDidMount() {
-    const state = this._getState(this.props)
-    state.dependencies = this.extractDependencies()
-    state.submitted = false
+    let state = this._getState(this.props)
+    state = {
+      'dependencies': this._extractDependencies(),
+      'submitted': false,
+      ...state,
+    }
     this.setState(state)
   }
 
@@ -146,64 +111,7 @@ class Builder extends Component {
     this.setState({ submitted: true })
   }
 
-  _getState(props) {
-
-    const {
-      onChangeWidgetProperty,
-      children,
-      factories,
-      formats = {},
-      onSubmit,
-      requestUploadUrl,
-      url,
-      types = {},
-    } = props
-
-    let { options = {}, type, value } = props
-
-    // Remove all the registered formats and types
-    transform.resetFormats()
-    transform.resetTypes()
-
-    // Register formats and types
-    Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
-    Object.entries(types).forEach(entry => transform.registerType(...entry))
-
-    // Pass `onSubmit` callback to the `Form` instance
-    if (onSubmit) options.onSubmit = onSubmit
-    if (requestUploadUrl) options.requestUploadUrl = requestUploadUrl
-    if (url) options.url = url
-    options.triggerValidation = this._triggerValidation
-
-    // Get type definition
-    type = type || children || {}
-
-    // string to JSON object
-    if (typeof type === 'string') type = JSON.parse(type)
-
-    // JSON object to tcomb
-    if (!(type instanceof Function)) {
-      const propValue = value
-
-      options = getOptions(type, options, factories, onChangeWidgetProperty)
-
-      // update current values with prop values (controlled component)
-      value = getValue(type)
-      walkObject(propValue, ({ isLeaf, location, value: propValue }) => {
-        if (isLeaf) set(value, location, propValue)
-      })
-
-      // add fields if required
-      type = transform(cleanLabels(type))
-    }
-
-    // Get fields options from JSON object
-    options = this._updateOptions(options, type)
-
-    return { options, type, value }
-  }
-
-  extractDependencies() {
+  _extractDependencies() {
     const { type } = this.props
     const dependencies = {}
     Object.entries(type.properties).forEach(([property, fields]) => {
@@ -218,17 +126,64 @@ class Builder extends Component {
     return dependencies
   }
 
+  // get the current value and options of the form
+  _getState(props) {
+
+    const {
+      onChangeWidgetProperty,
+      children,
+      factories,
+      formats = {},
+      onSubmit,
+      requestUploadUrl,
+      url,
+      types = {},
+    } = props
+
+    // value is the value of the whole form in an object, and will be updated with every change on the form
+    let { options = {}, type, value } = props
+
+    // transform is a function that transform a valid json to a tcomb object attending the registered formats and types
+    // Remove all the registered formats and types
+    transform.resetFormats()
+    transform.resetTypes()
+
+    // Register formats and types as props from the json
+    Object.entries(formats).forEach(entry => transform.registerFormat(...entry))
+    Object.entries(types).forEach(entry => transform.registerType(...entry))
+
+    // Pass custom variables and callbacks to the `Form` instance trhough the options field
+    if (onSubmit) options.onSubmit = onSubmit
+    if (requestUploadUrl) options.requestUploadUrl = requestUploadUrl
+    if (url) options.url = url
+    options.triggerValidation = this._triggerValidation
+
+    // Get type definition
+    type = type || children || {}
+
+    // If a string is passed it is first transform to JSON object
+    if (typeof type === 'string') type = JSON.parse(type)
+
+    if (!(typeof type === 'function')) {
+      [type, options, value] = jsonToTcombObjectAndUpdate(type, value, options, factories, transform, onChangeWidgetProperty)
+    }
+    // Update values ot the options like if there is a validation error, disable submit values
+    options = this._updateOptions(options, type)
+
+    return { options, type, value }
+  }
+
   // currently it enables/disables submit button depending on required fields
   // in this function we update dynamically values in the form depending onChanges
   _updateOptions(options, type, validate = false) {
     const { commentFilled = true } = this.props
     const { _root } = this
-    const { submitted } = this.state
 
     let disabled = { '$set': true }
 
     // Enable buttons
     if (_root) {
+      const { submitted } = this.state
       if (submitted && validate) _root.validate() // show errors
       disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
     }
