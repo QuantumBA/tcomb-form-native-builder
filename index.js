@@ -1,7 +1,7 @@
 import { get, set }   from 'object-path'
 import PropTypes                  from 'prop-types'
 import React, { Component }       from 'react'
-import { View }                   from 'react-native'
+import { View, Text }                   from 'react-native'
 import t                          from 'tcomb-form-native/lib'
 import defaultI18n                from 'tcomb-form-native/lib/i18n/en'
 import defaultStylesheet          from 'tcomb-form-native/lib/stylesheets/bootstrap'
@@ -135,7 +135,7 @@ class Builder extends Component {
   }
 
   _triggerValidation = () => {
-    this.setState({ submitted: true })
+    this.setState({ submitted: true, formIsValid: (this._root.validate()).errors.length === 0 })
   }
 
   _extractDependencies() {
@@ -223,7 +223,7 @@ class Builder extends Component {
     // Enable buttons
     if (_root) {
       const { submitted } = this.state
-      if (submitted && validate) _root.validate() // show errors
+      if (submitted && validate) this.setState({ formIsValid: (_root.validate()).errors.length === 0 }) // show errors
       disabled = { '$set': !(_root && _root.pureValidate().isValid() && commentFilled) }
     }
 
@@ -253,9 +253,19 @@ class Builder extends Component {
     return options
   }
 
+  renderError() {
+    const { submitted, formIsValid } = this.state
+    return (submitted && !formIsValid) ?
+      (
+        <Text style={{ color: 'red', fontWeight: 'bold' }}>
+          Something went wrong. Please make sure all required fields are filled
+        </Text>
+      ) : null
+  }
+
   render() {
     const { context, i18n, stylesheet, templates, buttonColor } = this.props
-    const { options, type, value, modalFunction } = this.state
+    const { options, type, value, modalFunction, formIsValid } = this.state
     options.config = Object.assign({ fields: options.fields }, options.config)
     /*
       Show or hide the confirmation modal when submitting the form by saving
@@ -265,6 +275,7 @@ class Builder extends Component {
       NOTE - See Modal prop "setModalFunction" in the render() below
     */
     options.showModal = modalFunction
+    options.formIsValid = formIsValid
     return (
       <View>
         <Form
@@ -284,6 +295,7 @@ class Builder extends Component {
           setModalFunction={(modalFunc) => { this.setState({ modalFunction: modalFunc }) }}
           buttonColor={buttonColor}
         />
+        {this.renderError()}
       </View>
     )
   }
