@@ -134,8 +134,10 @@ class Builder extends Component {
     this.setState({ options: this._updateOptions(options, type, true), value })
   }
 
-  _triggerValidation = () => {
-    this.setState({ submitted: true, formIsValid: (this._root.validate()).errors.length === 0 })
+  _triggerValidation = async () => {
+    formIsValid = (this._root.validate()).errors.length === 0
+    this.setState({ submitted: true, formIsValid })
+    return formIsValid
   }
 
   _extractDependencies() {
@@ -265,7 +267,7 @@ class Builder extends Component {
 
   render() {
     const { context, i18n, stylesheet, templates, buttonColor } = this.props
-    const { options, type, value, modalFunction, formIsValid } = this.state
+    const { options, type, value, modalFunction } = this.state
     options.config = Object.assign({ fields: options.fields }, options.config)
     /*
       Show or hide the confirmation modal when submitting the form by saving
@@ -275,7 +277,6 @@ class Builder extends Component {
       NOTE - See Modal prop "setModalFunction" in the render() below
     */
     options.showModal = modalFunction
-    options.formIsValid = formIsValid
     return (
       <View>
         <Form
