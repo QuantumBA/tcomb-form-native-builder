@@ -59,7 +59,7 @@ class Builder extends Component {
 
   // TODO: Clean
   componentDidUpdate(prevProps, prevState) {
-    const { type: { properties } } = this.props
+    const { type: { properties }, options: { stackedPlaceHolders } = {} } = this.props
     const { dependencies, value } = this.state
     // eslint-disable-next-line
     if (prevProps !== this.props) this.setState(this._getState(this.props))
@@ -88,7 +88,7 @@ class Builder extends Component {
                           query = query.replace(replaceString, `"${value[dependency][i][key]}"`)
                           // First item: object properties to get the path in the response and second item: the value path.
                           dependentFieldsArray.push([objectProperties, `${dependency}.${i}.${field}`])
-                          requests.push(processRemoteRequests(properties[dependency].items.properties[field].uri, {}, {}, query))
+                          requests.push(processRemoteRequests(properties[dependency].items.properties[field].uri, stackedPlaceHolders, {}, query))
                         }
                       }
                     })
@@ -100,7 +100,7 @@ class Builder extends Component {
               let query = properties[dependentField].meta.body
               query = query.replace(replaceString, `"${value[dependency]}"`)
               dependentFieldsArray.push([properties[dependentField], dependentField])
-              requests.push(processRemoteRequests(properties[dependentField].uri, {}, {}, query))
+              requests.push(processRemoteRequests(properties[dependentField].uri, stackedPlaceHolders, {}, query))
             }
           })
           Promise.all(requests).then((responses) => {
