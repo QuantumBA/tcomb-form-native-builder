@@ -72,7 +72,7 @@ export function getOptions({ factory, items, properties = {}, ...componentOption
   if (fields) options.fields = fields
 
   // pass meta and remote if the field is submit or if field has any dependency
-  if (componentOptions.type === 'submit') {
+  if (componentOptions.type === 'submit' || componentOptions.type === 'massUpload') {
     options.meta = componentOptions.meta
     options.remote = componentOptions.remote
   } else if (componentOptions.meta && componentOptions.meta.dependencies) {
